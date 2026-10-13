@@ -2,7 +2,7 @@
 
 Project 1 of the ML portfolio described in the master BRD (Version 2.0, 12 October 2026). The intended system uses a learner's public solved history to identify concept coverage, diagnose prerequisites for a target problem, and recommend an ordered practice path. If the learner imports their own accepted submissions, it can also retrieve relevant personal code templates.
 
-**Current status:** foundation only. This repository contains decisions, a frozen MVP concept vocabulary, and an empty application skeleton. It does not yet provide ranking, diagnosis, retrieval, an API, or a UI.
+**Current status:** Milestone 1 data foundation. This repository contains a curated local problem catalog and the frozen MVP concept vocabulary. Ranking, diagnosis, retrieval, API, and UI remain future work.
 
 ## Read first
 
@@ -34,10 +34,11 @@ Use Python 3.11 or newer. In PowerShell:
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+python -m scripts.rebuild_catalog
 python -m pytest
 ```
 
-The API and Streamlit commands will be documented when those entry points exist. No LeetCode credentials or personal submissions are needed to run the current check.
+The rebuild command validates the manually curated [seed](data/sample/problems_seed.psv) against the locked taxonomy, then writes the versioned [JSON export](data/sample/catalog_mvp-1.0.json) and [SQLite store](data/sample/catalog_mvp-1.0.sqlite3). SQLite is the primary local store. The seed is static: no network access or LeetCode credentials are needed. Acceptance rates are `null` because this seed has no frozen source snapshot for that changing field; tags are brief manual topic labels. `collected_at` records the manual curation date, and each note explains the concept mapping. Only `pytest` is needed for this milestone; application dependencies will be added when those layers exist.
 
 ## Delivery sequence
 

@@ -37,6 +37,7 @@ Read [docs/BRD.md](docs/BRD.md), [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), a
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+python -m scripts.rebuild_catalog
 python -m pytest
 ```
 

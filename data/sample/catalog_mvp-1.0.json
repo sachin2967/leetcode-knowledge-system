@@ -1,0 +1,1830 @@
+{
+  "catalog_version": "mvp-1.0",
+  "taxonomy_version": "mvp-1",
+  "problems": [
+    {
+      "problem_id": 1,
+      "title": "Two Sum",
+      "difficulty": "Easy",
+      "tags": [
+        "Array",
+        "Hash Table"
+      ],
+      "concepts": [
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Hash lookup finds the needed complement."
+    },
+    {
+      "problem_id": 3,
+      "title": "Longest Substring Without Repeating Characters",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Sliding Window"
+      ],
+      "concepts": [
+        "sliding_window",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A moving window and last seen positions maintain uniqueness."
+    },
+    {
+      "problem_id": 11,
+      "title": "Container With Most Water",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Two Pointers"
+      ],
+      "concepts": [
+        "two_pointers",
+        "greedy"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Move the shorter boundary because the other move cannot improve area."
+    },
+    {
+      "problem_id": 15,
+      "title": "3Sum",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Sorting",
+        "Two Pointers"
+      ],
+      "concepts": [
+        "sorting",
+        "two_pointers"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Sorting permits duplicate handling and inward pointer search."
+    },
+    {
+      "problem_id": 17,
+      "title": "Letter Combinations of a Phone Number",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Backtracking"
+      ],
+      "concepts": [
+        "backtracking"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Enumerate one choice for each digit and undo it."
+    },
+    {
+      "problem_id": 19,
+      "title": "Remove Nth Node From End of List",
+      "difficulty": "Medium",
+      "tags": [
+        "Linked List",
+        "Two Pointers"
+      ],
+      "concepts": [
+        "linked_lists",
+        "two_pointers"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Two node pointers maintain a fixed gap for deletion."
+    },
+    {
+      "problem_id": 20,
+      "title": "Valid Parentheses",
+      "difficulty": "Easy",
+      "tags": [
+        "String",
+        "Stack"
+      ],
+      "concepts": [
+        "stack"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A stack matches each closing bracket to the latest opener."
+    },
+    {
+      "problem_id": 21,
+      "title": "Merge Two Sorted Lists",
+      "difficulty": "Easy",
+      "tags": [
+        "Linked List"
+      ],
+      "concepts": [
+        "linked_lists"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Rewire list nodes while merging two chains."
+    },
+    {
+      "problem_id": 22,
+      "title": "Generate Parentheses",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Backtracking"
+      ],
+      "concepts": [
+        "backtracking"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Build only valid prefixes through a choice tree."
+    },
+    {
+      "problem_id": 23,
+      "title": "Merge k Sorted Lists",
+      "difficulty": "Hard",
+      "tags": [
+        "Linked List",
+        "Heap"
+      ],
+      "concepts": [
+        "linked_lists",
+        "heap_priority_queue"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A heap selects the next node among list heads."
+    },
+    {
+      "problem_id": 33,
+      "title": "Search in Rotated Sorted Array",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Binary Search"
+      ],
+      "concepts": [
+        "binary_search"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "One half remains ordered at each search step."
+    },
+    {
+      "problem_id": 39,
+      "title": "Combination Sum",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Backtracking"
+      ],
+      "concepts": [
+        "backtracking"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Explore candidate choices while tracking remaining sum."
+    },
+    {
+      "problem_id": 42,
+      "title": "Trapping Rain Water",
+      "difficulty": "Hard",
+      "tags": [
+        "Array",
+        "Two Pointers"
+      ],
+      "concepts": [
+        "two_pointers"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Boundary maxima determine water while pointers move inward."
+    },
+    {
+      "problem_id": 46,
+      "title": "Permutations",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Backtracking"
+      ],
+      "concepts": [
+        "backtracking"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Choose and undo unused values to enumerate permutations."
+    },
+    {
+      "problem_id": 49,
+      "title": "Group Anagrams",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Hash Table",
+        "String"
+      ],
+      "concepts": [
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A canonical key groups equal character counts."
+    },
+    {
+      "problem_id": 53,
+      "title": "Maximum Subarray",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Best ending here reuses the previous best ending state."
+    },
+    {
+      "problem_id": 56,
+      "title": "Merge Intervals",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Sorting",
+        "Intervals"
+      ],
+      "concepts": [
+        "sorting",
+        "intervals"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Sort starts then merge overlapping ranges."
+    },
+    {
+      "problem_id": 57,
+      "title": "Insert Interval",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Intervals"
+      ],
+      "concepts": [
+        "intervals"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Compare ordered ranges and merge overlaps around insertion."
+    },
+    {
+      "problem_id": 62,
+      "title": "Unique Paths",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming",
+        "Grid"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Each cell count combines counts from its two predecessors."
+    },
+    {
+      "problem_id": 70,
+      "title": "Climbing Stairs",
+      "difficulty": "Easy",
+      "tags": [
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Ways to reach a step reuse the prior two counts."
+    },
+    {
+      "problem_id": 72,
+      "title": "Edit Distance",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Prefix pair states reuse neighboring edit costs."
+    },
+    {
+      "problem_id": 76,
+      "title": "Minimum Window Substring",
+      "difficulty": "Hard",
+      "tags": [
+        "String",
+        "Sliding Window"
+      ],
+      "concepts": [
+        "sliding_window",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Window counts track when all required characters are covered."
+    },
+    {
+      "problem_id": 78,
+      "title": "Subsets",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Backtracking"
+      ],
+      "concepts": [
+        "backtracking"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Include or exclude each value during enumeration."
+    },
+    {
+      "problem_id": 79,
+      "title": "Word Search",
+      "difficulty": "Medium",
+      "tags": [
+        "Grid",
+        "Backtracking"
+      ],
+      "concepts": [
+        "backtracking"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Search neighboring cells and undo visited choices."
+    },
+    {
+      "problem_id": 84,
+      "title": "Largest Rectangle in Histogram",
+      "difficulty": "Hard",
+      "tags": [
+        "Array",
+        "Monotonic Stack"
+      ],
+      "concepts": [
+        "monotonic_stack"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Increasing bar indices expose each bar's first smaller boundary."
+    },
+    {
+      "problem_id": 91,
+      "title": "Decode Ways",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Prefix counts depend on valid one and two digit endings."
+    },
+    {
+      "problem_id": 94,
+      "title": "Binary Tree Inorder Traversal",
+      "difficulty": "Easy",
+      "tags": [
+        "Tree",
+        "Stack"
+      ],
+      "concepts": [
+        "tree_traversal",
+        "stack"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "An explicit stack visits left nodes before roots and right nodes."
+    },
+    {
+      "problem_id": 98,
+      "title": "Validate Binary Search Tree",
+      "difficulty": "Medium",
+      "tags": [
+        "Tree",
+        "Binary Search Tree"
+      ],
+      "concepts": [
+        "binary_search_tree",
+        "tree_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Traverse with bounds imposed by ordered ancestors."
+    },
+    {
+      "problem_id": 102,
+      "title": "Binary Tree Level Order Traversal",
+      "difficulty": "Medium",
+      "tags": [
+        "Tree",
+        "Breadth First Search"
+      ],
+      "concepts": [
+        "tree_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Breadth first traversal groups nodes by depth."
+    },
+    {
+      "problem_id": 104,
+      "title": "Maximum Depth of Binary Tree",
+      "difficulty": "Easy",
+      "tags": [
+        "Tree",
+        "Depth First Search"
+      ],
+      "concepts": [
+        "tree_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Propagate depth through parent child links."
+    },
+    {
+      "problem_id": 105,
+      "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+      "difficulty": "Medium",
+      "tags": [
+        "Tree",
+        "Divide and Conquer"
+      ],
+      "concepts": [
+        "tree_traversal",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Root order and indexed inorder positions define recursive subtrees."
+    },
+    {
+      "problem_id": 121,
+      "title": "Best Time to Buy and Sell Stock",
+      "difficulty": "Easy",
+      "tags": [
+        "Array",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "greedy"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Track the lowest earlier price and best profit so far."
+    },
+    {
+      "problem_id": 128,
+      "title": "Longest Consecutive Sequence",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Hash Table"
+      ],
+      "concepts": [
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A set detects sequence starts and successive values."
+    },
+    {
+      "problem_id": 133,
+      "title": "Clone Graph",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Depth First Search"
+      ],
+      "concepts": [
+        "graph_traversal",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Traverse neighbors while a map preserves one clone per vertex."
+    },
+    {
+      "problem_id": 136,
+      "title": "Single Number",
+      "difficulty": "Easy",
+      "tags": [
+        "Array",
+        "Bit Manipulation"
+      ],
+      "concepts": [
+        "bit_manipulation"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "XOR cancels paired values."
+    },
+    {
+      "problem_id": 139,
+      "title": "Word Break",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Prefix reachability reuses earlier valid break positions."
+    },
+    {
+      "problem_id": 141,
+      "title": "Linked List Cycle",
+      "difficulty": "Easy",
+      "tags": [
+        "Linked List",
+        "Two Pointers"
+      ],
+      "concepts": [
+        "linked_lists",
+        "two_pointers"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Fast and slow node pointers meet exactly when a cycle exists."
+    },
+    {
+      "problem_id": 143,
+      "title": "Reorder List",
+      "difficulty": "Medium",
+      "tags": [
+        "Linked List",
+        "Two Pointers"
+      ],
+      "concepts": [
+        "linked_lists",
+        "two_pointers"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Find midpoint then reverse and interleave node chains."
+    },
+    {
+      "problem_id": 146,
+      "title": "LRU Cache",
+      "difficulty": "Medium",
+      "tags": [
+        "Hash Table",
+        "Linked List"
+      ],
+      "concepts": [
+        "arrays_hashing",
+        "linked_lists"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A map locates entries and a doubly linked list maintains recency."
+    },
+    {
+      "problem_id": 150,
+      "title": "Evaluate Reverse Polish Notation",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Stack"
+      ],
+      "concepts": [
+        "stack"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Operands are popped in last in first out order."
+    },
+    {
+      "problem_id": 152,
+      "title": "Maximum Product Subarray",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Track both max and min products because signs can flip."
+    },
+    {
+      "problem_id": 153,
+      "title": "Find Minimum in Rotated Sorted Array",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Binary Search"
+      ],
+      "concepts": [
+        "binary_search"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Comparison with the right endpoint discards an ordered half."
+    },
+    {
+      "problem_id": 155,
+      "title": "Min Stack",
+      "difficulty": "Medium",
+      "tags": [
+        "Stack",
+        "Design"
+      ],
+      "concepts": [
+        "stack"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Stack entries retain the minimum of each prefix."
+    },
+    {
+      "problem_id": 172,
+      "title": "Factorial Trailing Zeroes",
+      "difficulty": "Medium",
+      "tags": [
+        "Math",
+        "Number Theory"
+      ],
+      "concepts": [
+        "math_number_theory"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Count factors of five in the factorial without constructing it."
+    },
+    {
+      "problem_id": 198,
+      "title": "House Robber",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Each house combines the best skip and take states."
+    },
+    {
+      "problem_id": 200,
+      "title": "Number of Islands",
+      "difficulty": "Medium",
+      "tags": [
+        "Grid",
+        "Depth First Search"
+      ],
+      "concepts": [
+        "graph_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Flood fill visits each connected land component."
+    },
+    {
+      "problem_id": 204,
+      "title": "Count Primes",
+      "difficulty": "Medium",
+      "tags": [
+        "Math",
+        "Number Theory"
+      ],
+      "concepts": [
+        "math_number_theory"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "The sieve marks multiples of each prime up to the square root."
+    },
+    {
+      "problem_id": 206,
+      "title": "Reverse Linked List",
+      "difficulty": "Easy",
+      "tags": [
+        "Linked List"
+      ],
+      "concepts": [
+        "linked_lists"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Redirect next pointers while preserving the remaining chain."
+    },
+    {
+      "problem_id": 207,
+      "title": "Course Schedule",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Topological Sort"
+      ],
+      "concepts": [
+        "topological_sort",
+        "graph_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Prerequisite graph traversal detects cycles or removes zero indegree courses."
+    },
+    {
+      "problem_id": 208,
+      "title": "Implement Trie (Prefix Tree)",
+      "difficulty": "Medium",
+      "tags": [
+        "Trie",
+        "String"
+      ],
+      "concepts": [
+        "trie"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Shared prefix nodes support insertion and prefix lookup."
+    },
+    {
+      "problem_id": 210,
+      "title": "Course Schedule II",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Topological Sort"
+      ],
+      "concepts": [
+        "topological_sort",
+        "graph_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Topological order places every prerequisite before its course."
+    },
+    {
+      "problem_id": 215,
+      "title": "Kth Largest Element in an Array",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Heap"
+      ],
+      "concepts": [
+        "heap_priority_queue"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A size k heap keeps the largest candidates."
+    },
+    {
+      "problem_id": 217,
+      "title": "Contains Duplicate",
+      "difficulty": "Easy",
+      "tags": [
+        "Array",
+        "Hash Table"
+      ],
+      "concepts": [
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Set membership detects a repeated value."
+    },
+    {
+      "problem_id": 226,
+      "title": "Invert Binary Tree",
+      "difficulty": "Easy",
+      "tags": [
+        "Tree",
+        "Depth First Search"
+      ],
+      "concepts": [
+        "tree_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Visit nodes and exchange their children."
+    },
+    {
+      "problem_id": 230,
+      "title": "Kth Smallest Element in a BST",
+      "difficulty": "Medium",
+      "tags": [
+        "Tree",
+        "Binary Search Tree"
+      ],
+      "concepts": [
+        "binary_search_tree",
+        "tree_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Inorder traversal of ordered subtrees yields sorted values."
+    },
+    {
+      "problem_id": 235,
+      "title": "Lowest Common Ancestor of a Binary Search Tree",
+      "difficulty": "Medium",
+      "tags": [
+        "Tree",
+        "Binary Search Tree"
+      ],
+      "concepts": [
+        "binary_search_tree"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Ordered subtree bounds direct search toward the split point."
+    },
+    {
+      "problem_id": 236,
+      "title": "Lowest Common Ancestor of a Binary Tree",
+      "difficulty": "Medium",
+      "tags": [
+        "Tree",
+        "Depth First Search"
+      ],
+      "concepts": [
+        "tree_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Postorder traversal propagates matches from child branches."
+    },
+    {
+      "problem_id": 238,
+      "title": "Product of Array Except Self",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Prefix Sum"
+      ],
+      "concepts": [
+        "prefix_sums"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Prefix and suffix products exclude the current index."
+    },
+    {
+      "problem_id": 239,
+      "title": "Sliding Window Maximum",
+      "difficulty": "Hard",
+      "tags": [
+        "Array",
+        "Sliding Window",
+        "Deque"
+      ],
+      "concepts": [
+        "sliding_window"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A decreasing deque maintains the maximum in each moving range."
+    },
+    {
+      "problem_id": 268,
+      "title": "Missing Number",
+      "difficulty": "Easy",
+      "tags": [
+        "Array",
+        "Bit Manipulation"
+      ],
+      "concepts": [
+        "bit_manipulation"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "XOR of indices and values leaves the missing number."
+    },
+    {
+      "problem_id": 279,
+      "title": "Perfect Squares",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Minimum count for a total reuses smaller totals."
+    },
+    {
+      "problem_id": 295,
+      "title": "Find Median from Data Stream",
+      "difficulty": "Hard",
+      "tags": [
+        "Heap",
+        "Design"
+      ],
+      "concepts": [
+        "heap_priority_queue"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Two heaps maintain balanced lower and upper halves."
+    },
+    {
+      "problem_id": 300,
+      "title": "Longest Increasing Subsequence",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Binary Search"
+      ],
+      "concepts": [
+        "binary_search"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Binary search updates the smallest tail for each length."
+    },
+    {
+      "problem_id": 303,
+      "title": "Range Sum Query - Immutable",
+      "difficulty": "Easy",
+      "tags": [
+        "Array",
+        "Prefix Sum"
+      ],
+      "concepts": [
+        "prefix_sums"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Cumulative sums answer each range by subtraction."
+    },
+    {
+      "problem_id": 307,
+      "title": "Range Sum Query - Mutable",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Segment Tree"
+      ],
+      "concepts": [
+        "segment_tree"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Hierarchical sums support point updates and range queries."
+    },
+    {
+      "problem_id": 309,
+      "title": "Best Time to Buy and Sell Stock with Cooldown",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Holding selling and resting states enforce the cooldown."
+    },
+    {
+      "problem_id": 312,
+      "title": "Burst Balloons",
+      "difficulty": "Hard",
+      "tags": [
+        "Array",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "interval_dp",
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Choose the final balloon in each interval and combine shorter ranges."
+    },
+    {
+      "problem_id": 322,
+      "title": "Coin Change",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming",
+        "Knapsack"
+      ],
+      "concepts": [
+        "knapsack_dp",
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Amount states choose coins and reuse smaller amounts."
+    },
+    {
+      "problem_id": 347,
+      "title": "Top K Frequent Elements",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Hash Table",
+        "Heap"
+      ],
+      "concepts": [
+        "arrays_hashing",
+        "heap_priority_queue"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Count frequencies then retain the top k with a heap."
+    },
+    {
+      "problem_id": 394,
+      "title": "Decode String",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Stack"
+      ],
+      "concepts": [
+        "stack"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Stack frames preserve repeat counts and outer strings."
+    },
+    {
+      "problem_id": 416,
+      "title": "Partition Equal Subset Sum",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming",
+        "Knapsack"
+      ],
+      "concepts": [
+        "knapsack_dp"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Subset capacity state checks whether half the total is reachable."
+    },
+    {
+      "problem_id": 417,
+      "title": "Pacific Atlantic Water Flow",
+      "difficulty": "Medium",
+      "tags": [
+        "Grid",
+        "Depth First Search"
+      ],
+      "concepts": [
+        "graph_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Reverse traversal from both oceans finds intersecting reachable cells."
+    },
+    {
+      "problem_id": 435,
+      "title": "Non-overlapping Intervals",
+      "difficulty": "Medium",
+      "tags": [
+        "Intervals",
+        "Greedy"
+      ],
+      "concepts": [
+        "sorting",
+        "intervals",
+        "greedy"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Sort by end time and keep the earliest finishing compatible interval."
+    },
+    {
+      "problem_id": 437,
+      "title": "Path Sum III",
+      "difficulty": "Medium",
+      "tags": [
+        "Tree",
+        "Prefix Sum"
+      ],
+      "concepts": [
+        "tree_traversal",
+        "prefix_sums"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "DFS path prefix counts identify target sum suffixes."
+    },
+    {
+      "problem_id": 494,
+      "title": "Target Sum",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming",
+        "Knapsack"
+      ],
+      "concepts": [
+        "knapsack_dp",
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Count sign assignments as a target subset sum."
+    },
+    {
+      "problem_id": 496,
+      "title": "Next Greater Element I",
+      "difficulty": "Easy",
+      "tags": [
+        "Array",
+        "Monotonic Stack"
+      ],
+      "concepts": [
+        "monotonic_stack"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A decreasing stack resolves next greater values."
+    },
+    {
+      "problem_id": 518,
+      "title": "Coin Change II",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming",
+        "Knapsack"
+      ],
+      "concepts": [
+        "knapsack_dp",
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Amount state counts combinations while iterating each coin once."
+    },
+    {
+      "problem_id": 523,
+      "title": "Continuous Subarray Sum",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Prefix Sum",
+        "Hash Table"
+      ],
+      "concepts": [
+        "prefix_sums",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Repeated prefix remainder reveals a divisible subarray."
+    },
+    {
+      "problem_id": 525,
+      "title": "Contiguous Array",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Prefix Sum",
+        "Hash Table"
+      ],
+      "concepts": [
+        "prefix_sums",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Equal transformed prefix sums bound balanced subarrays."
+    },
+    {
+      "problem_id": 547,
+      "title": "Number of Provinces",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Union Find"
+      ],
+      "concepts": [
+        "union_find"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Union connected cities to count components."
+    },
+    {
+      "problem_id": 560,
+      "title": "Subarray Sum Equals K",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Prefix Sum",
+        "Hash Table"
+      ],
+      "concepts": [
+        "prefix_sums",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Counts of earlier prefix sums identify matching subarrays."
+    },
+    {
+      "problem_id": 567,
+      "title": "Permutation in String",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Sliding Window"
+      ],
+      "concepts": [
+        "sliding_window",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Window character counts match a fixed target multiset."
+    },
+    {
+      "problem_id": 621,
+      "title": "Task Scheduler",
+      "difficulty": "Medium",
+      "tags": [
+        "Greedy",
+        "Counting"
+      ],
+      "concepts": [
+        "greedy",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Frequency counts determine a lower bound on idle slots."
+    },
+    {
+      "problem_id": 684,
+      "title": "Redundant Connection",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Union Find"
+      ],
+      "concepts": [
+        "union_find"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "The first edge joining already connected vertices closes a cycle."
+    },
+    {
+      "problem_id": 695,
+      "title": "Max Area of Island",
+      "difficulty": "Medium",
+      "tags": [
+        "Grid",
+        "Depth First Search"
+      ],
+      "concepts": [
+        "graph_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Flood fill counts each connected land region."
+    },
+    {
+      "problem_id": 704,
+      "title": "Binary Search",
+      "difficulty": "Easy",
+      "tags": [
+        "Array",
+        "Binary Search"
+      ],
+      "concepts": [
+        "binary_search"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Halve the sorted search interval after each comparison."
+    },
+    {
+      "problem_id": 714,
+      "title": "Best Time to Buy and Sell Stock with Transaction Fee",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Holding and cash states incorporate the transaction fee."
+    },
+    {
+      "problem_id": 739,
+      "title": "Daily Temperatures",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Monotonic Stack"
+      ],
+      "concepts": [
+        "monotonic_stack"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A decreasing index stack waits for a warmer day."
+    },
+    {
+      "problem_id": 743,
+      "title": "Network Delay Time",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Shortest Path"
+      ],
+      "concepts": [
+        "shortest_paths",
+        "heap_priority_queue"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Dijkstra repeatedly expands the cheapest unsettled vertex."
+    },
+    {
+      "problem_id": 746,
+      "title": "Min Cost Climbing Stairs",
+      "difficulty": "Easy",
+      "tags": [
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Each step cost reuses the cheaper preceding route."
+    },
+    {
+      "problem_id": 785,
+      "title": "Is Graph Bipartite?",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Breadth First Search"
+      ],
+      "concepts": [
+        "graph_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Traverse edges while assigning opposing colors."
+    },
+    {
+      "problem_id": 787,
+      "title": "Cheapest Flights Within K Stops",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Shortest Path"
+      ],
+      "concepts": [
+        "shortest_paths",
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Bounded edge relaxation tracks cheapest cost by stop count."
+    },
+    {
+      "problem_id": 875,
+      "title": "Koko Eating Bananas",
+      "difficulty": "Medium",
+      "tags": [
+        "Binary Search"
+      ],
+      "concepts": [
+        "binary_search"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Feasibility is monotonic in the proposed eating speed."
+    },
+    {
+      "problem_id": 912,
+      "title": "Sort an Array",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Sorting"
+      ],
+      "concepts": [
+        "sorting"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Comparison sorting orders the values."
+    },
+    {
+      "problem_id": 930,
+      "title": "Binary Subarrays With Sum",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Prefix Sum"
+      ],
+      "concepts": [
+        "prefix_sums",
+        "arrays_hashing"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Earlier prefix sum counts give the number of target subarrays."
+    },
+    {
+      "problem_id": 973,
+      "title": "K Closest Points to Origin",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Heap"
+      ],
+      "concepts": [
+        "heap_priority_queue"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A bounded heap retains the closest k points."
+    },
+    {
+      "problem_id": 981,
+      "title": "Time Based Key-Value Store",
+      "difficulty": "Medium",
+      "tags": [
+        "Hash Table",
+        "Binary Search"
+      ],
+      "concepts": [
+        "arrays_hashing",
+        "binary_search"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Per-key ordered timestamps permit binary lookup by time."
+    },
+    {
+      "problem_id": 994,
+      "title": "Rotting Oranges",
+      "difficulty": "Medium",
+      "tags": [
+        "Grid",
+        "Breadth First Search"
+      ],
+      "concepts": [
+        "graph_traversal",
+        "shortest_paths"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Multi-source BFS measures minimum minutes to each reachable orange."
+    },
+    {
+      "problem_id": 1004,
+      "title": "Max Consecutive Ones III",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Sliding Window"
+      ],
+      "concepts": [
+        "sliding_window"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A moving range maintains at most k zeroes."
+    },
+    {
+      "problem_id": 1039,
+      "title": "Minimum Score Triangulation of Polygon",
+      "difficulty": "Medium",
+      "tags": [
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "interval_dp",
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Choose a final triangle vertex and combine the two shorter intervals."
+    },
+    {
+      "problem_id": 1091,
+      "title": "Shortest Path in Binary Matrix",
+      "difficulty": "Medium",
+      "tags": [
+        "Grid",
+        "Shortest Path"
+      ],
+      "concepts": [
+        "shortest_paths",
+        "graph_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "BFS explores unweighted cells by path length."
+    },
+    {
+      "problem_id": 1143,
+      "title": "Longest Common Subsequence",
+      "difficulty": "Medium",
+      "tags": [
+        "String",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Prefix pair states reuse neighboring subsequence lengths."
+    },
+    {
+      "problem_id": 1353,
+      "title": "Maximum Number of Events That Can Be Attended",
+      "difficulty": "Medium",
+      "tags": [
+        "Intervals",
+        "Heap",
+        "Greedy"
+      ],
+      "concepts": [
+        "sorting",
+        "heap_priority_queue",
+        "greedy"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Attend the currently available event with earliest end date."
+    },
+    {
+      "problem_id": 1658,
+      "title": "Minimum Operations to Reduce X to Zero",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Sliding Window"
+      ],
+      "concepts": [
+        "sliding_window"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Find the longest middle window with complementary sum."
+    },
+    {
+      "problem_id": 1712,
+      "title": "Ways to Split Array Into Three Subarrays",
+      "difficulty": "Medium",
+      "tags": [
+        "Array",
+        "Prefix Sum",
+        "Binary Search"
+      ],
+      "concepts": [
+        "prefix_sums",
+        "binary_search"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Prefix sums and monotonic boundaries locate valid split positions."
+    },
+    {
+      "problem_id": 1803,
+      "title": "Count Pairs With XOR in a Range",
+      "difficulty": "Hard",
+      "tags": [
+        "Trie",
+        "Bit Manipulation"
+      ],
+      "concepts": [
+        "trie",
+        "bit_manipulation"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A binary trie counts earlier values satisfying XOR bounds."
+    },
+    {
+      "problem_id": 2115,
+      "title": "Find All Possible Recipes from Given Supplies",
+      "difficulty": "Medium",
+      "tags": [
+        "Graph",
+        "Topological Sort"
+      ],
+      "concepts": [
+        "topological_sort",
+        "graph_traversal"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Dependency indegrees unlock recipes once ingredients are available."
+    },
+    {
+      "problem_id": 2276,
+      "title": "Count Integers in Intervals",
+      "difficulty": "Hard",
+      "tags": [
+        "Intervals",
+        "Segment Tree"
+      ],
+      "concepts": [
+        "segment_tree",
+        "lazy_propagation",
+        "intervals"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "A dynamic segment tree marks covered ranges and defers full coverage updates."
+    },
+    {
+      "problem_id": 2338,
+      "title": "Count the Number of Ideal Arrays",
+      "difficulty": "Hard",
+      "tags": [
+        "Math",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "math_number_theory",
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Factorizations and combinations count valid multiplicative chains."
+    },
+    {
+      "problem_id": 2376,
+      "title": "Count Special Integers",
+      "difficulty": "Hard",
+      "tags": [
+        "Digit DP",
+        "Bitmask"
+      ],
+      "concepts": [
+        "digit_dp",
+        "bit_manipulation"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Digit position tightness and a used-digit mask count distinct-digit numbers."
+    },
+    {
+      "problem_id": 2719,
+      "title": "Count of Integers",
+      "difficulty": "Hard",
+      "tags": [
+        "Digit DP",
+        "Dynamic Programming"
+      ],
+      "concepts": [
+        "digit_dp",
+        "dynamic_programming"
+      ],
+      "acceptance_rate": null,
+      "source": "LeetCode public problem page (manual curation)",
+      "collected_at": "2026-10-14",
+      "notes": "Digit tightness and running digit sum count bounded valid numbers."
+    }
+  ]
+}

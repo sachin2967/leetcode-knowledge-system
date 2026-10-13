@@ -12,4 +12,5 @@ data/raw/*
 !data/raw/.gitkeep
 *.sqlite
 *.sqlite3
+!data/sample/catalog_mvp-1.0.sqlite3
 *.db

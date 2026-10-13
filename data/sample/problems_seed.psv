@@ -1,0 +1,112 @@
+problem_id|title|difficulty|tags|concepts|notes
+1|Two Sum|Easy|Array;Hash Table|arrays_hashing|Hash lookup finds the needed complement.
+3|Longest Substring Without Repeating Characters|Medium|String;Sliding Window|sliding_window;arrays_hashing|A moving window and last seen positions maintain uniqueness.
+11|Container With Most Water|Medium|Array;Two Pointers|two_pointers;greedy|Move the shorter boundary because the other move cannot improve area.
+15|3Sum|Medium|Array;Sorting;Two Pointers|sorting;two_pointers|Sorting permits duplicate handling and inward pointer search.
+17|Letter Combinations of a Phone Number|Medium|String;Backtracking|backtracking|Enumerate one choice for each digit and undo it.
+19|Remove Nth Node From End of List|Medium|Linked List;Two Pointers|linked_lists;two_pointers|Two node pointers maintain a fixed gap for deletion.
+20|Valid Parentheses|Easy|String;Stack|stack|A stack matches each closing bracket to the latest opener.
+21|Merge Two Sorted Lists|Easy|Linked List|linked_lists|Rewire list nodes while merging two chains.
+22|Generate Parentheses|Medium|String;Backtracking|backtracking|Build only valid prefixes through a choice tree.
+23|Merge k Sorted Lists|Hard|Linked List;Heap|linked_lists;heap_priority_queue|A heap selects the next node among list heads.
+33|Search in Rotated Sorted Array|Medium|Array;Binary Search|binary_search|One half remains ordered at each search step.
+39|Combination Sum|Medium|Array;Backtracking|backtracking|Explore candidate choices while tracking remaining sum.
+42|Trapping Rain Water|Hard|Array;Two Pointers|two_pointers|Boundary maxima determine water while pointers move inward.
+46|Permutations|Medium|Array;Backtracking|backtracking|Choose and undo unused values to enumerate permutations.
+49|Group Anagrams|Medium|Array;Hash Table;String|arrays_hashing|A canonical key groups equal character counts.
+53|Maximum Subarray|Medium|Array;Dynamic Programming|dynamic_programming|Best ending here reuses the previous best ending state.
+56|Merge Intervals|Medium|Array;Sorting;Intervals|sorting;intervals|Sort starts then merge overlapping ranges.
+57|Insert Interval|Medium|Array;Intervals|intervals|Compare ordered ranges and merge overlaps around insertion.
+62|Unique Paths|Medium|Dynamic Programming;Grid|dynamic_programming|Each cell count combines counts from its two predecessors.
+70|Climbing Stairs|Easy|Dynamic Programming|dynamic_programming|Ways to reach a step reuse the prior two counts.
+72|Edit Distance|Medium|String;Dynamic Programming|dynamic_programming|Prefix pair states reuse neighboring edit costs.
+76|Minimum Window Substring|Hard|String;Sliding Window|sliding_window;arrays_hashing|Window counts track when all required characters are covered.
+78|Subsets|Medium|Array;Backtracking|backtracking|Include or exclude each value during enumeration.
+79|Word Search|Medium|Grid;Backtracking|backtracking|Search neighboring cells and undo visited choices.
+84|Largest Rectangle in Histogram|Hard|Array;Monotonic Stack|monotonic_stack|Increasing bar indices expose each bar's first smaller boundary.
+91|Decode Ways|Medium|String;Dynamic Programming|dynamic_programming|Prefix counts depend on valid one and two digit endings.
+94|Binary Tree Inorder Traversal|Easy|Tree;Stack|tree_traversal;stack|An explicit stack visits left nodes before roots and right nodes.
+98|Validate Binary Search Tree|Medium|Tree;Binary Search Tree|binary_search_tree;tree_traversal|Traverse with bounds imposed by ordered ancestors.
+102|Binary Tree Level Order Traversal|Medium|Tree;Breadth First Search|tree_traversal|Breadth first traversal groups nodes by depth.
+104|Maximum Depth of Binary Tree|Easy|Tree;Depth First Search|tree_traversal|Propagate depth through parent child links.
+105|Construct Binary Tree from Preorder and Inorder Traversal|Medium|Tree;Divide and Conquer|tree_traversal;arrays_hashing|Root order and indexed inorder positions define recursive subtrees.
+121|Best Time to Buy and Sell Stock|Easy|Array;Dynamic Programming|greedy|Track the lowest earlier price and best profit so far.
+128|Longest Consecutive Sequence|Medium|Array;Hash Table|arrays_hashing|A set detects sequence starts and successive values.
+133|Clone Graph|Medium|Graph;Depth First Search|graph_traversal;arrays_hashing|Traverse neighbors while a map preserves one clone per vertex.
+136|Single Number|Easy|Array;Bit Manipulation|bit_manipulation|XOR cancels paired values.
+139|Word Break|Medium|String;Dynamic Programming|dynamic_programming|Prefix reachability reuses earlier valid break positions.
+141|Linked List Cycle|Easy|Linked List;Two Pointers|linked_lists;two_pointers|Fast and slow node pointers meet exactly when a cycle exists.
+143|Reorder List|Medium|Linked List;Two Pointers|linked_lists;two_pointers|Find midpoint then reverse and interleave node chains.
+146|LRU Cache|Medium|Hash Table;Linked List|arrays_hashing;linked_lists|A map locates entries and a doubly linked list maintains recency.
+150|Evaluate Reverse Polish Notation|Medium|Array;Stack|stack|Operands are popped in last in first out order.
+152|Maximum Product Subarray|Medium|Array;Dynamic Programming|dynamic_programming|Track both max and min products because signs can flip.
+153|Find Minimum in Rotated Sorted Array|Medium|Array;Binary Search|binary_search|Comparison with the right endpoint discards an ordered half.
+155|Min Stack|Medium|Stack;Design|stack|Stack entries retain the minimum of each prefix.
+198|House Robber|Medium|Array;Dynamic Programming|dynamic_programming|Each house combines the best skip and take states.
+200|Number of Islands|Medium|Grid;Depth First Search|graph_traversal|Flood fill visits each connected land component.
+206|Reverse Linked List|Easy|Linked List|linked_lists|Redirect next pointers while preserving the remaining chain.
+207|Course Schedule|Medium|Graph;Topological Sort|topological_sort;graph_traversal|Prerequisite graph traversal detects cycles or removes zero indegree courses.
+208|Implement Trie (Prefix Tree)|Medium|Trie;String|trie|Shared prefix nodes support insertion and prefix lookup.
+210|Course Schedule II|Medium|Graph;Topological Sort|topological_sort;graph_traversal|Topological order places every prerequisite before its course.
+215|Kth Largest Element in an Array|Medium|Array;Heap|heap_priority_queue|A size k heap keeps the largest candidates.
+217|Contains Duplicate|Easy|Array;Hash Table|arrays_hashing|Set membership detects a repeated value.
+226|Invert Binary Tree|Easy|Tree;Depth First Search|tree_traversal|Visit nodes and exchange their children.
+230|Kth Smallest Element in a BST|Medium|Tree;Binary Search Tree|binary_search_tree;tree_traversal|Inorder traversal of ordered subtrees yields sorted values.
+235|Lowest Common Ancestor of a Binary Search Tree|Medium|Tree;Binary Search Tree|binary_search_tree|Ordered subtree bounds direct search toward the split point.
+236|Lowest Common Ancestor of a Binary Tree|Medium|Tree;Depth First Search|tree_traversal|Postorder traversal propagates matches from child branches.
+238|Product of Array Except Self|Medium|Array;Prefix Sum|prefix_sums|Prefix and suffix products exclude the current index.
+239|Sliding Window Maximum|Hard|Array;Sliding Window;Deque|sliding_window|A decreasing deque maintains the maximum in each moving range.
+268|Missing Number|Easy|Array;Bit Manipulation|bit_manipulation|XOR of indices and values leaves the missing number.
+279|Perfect Squares|Medium|Dynamic Programming|dynamic_programming|Minimum count for a total reuses smaller totals.
+295|Find Median from Data Stream|Hard|Heap;Design|heap_priority_queue|Two heaps maintain balanced lower and upper halves.
+300|Longest Increasing Subsequence|Medium|Array;Binary Search|binary_search|Binary search updates the smallest tail for each length.
+303|Range Sum Query - Immutable|Easy|Array;Prefix Sum|prefix_sums|Cumulative sums answer each range by subtraction.
+307|Range Sum Query - Mutable|Medium|Array;Segment Tree|segment_tree|Hierarchical sums support point updates and range queries.
+309|Best Time to Buy and Sell Stock with Cooldown|Medium|Dynamic Programming|dynamic_programming|Holding selling and resting states enforce the cooldown.
+312|Burst Balloons|Hard|Array;Dynamic Programming|interval_dp;dynamic_programming|Choose the final balloon in each interval and combine shorter ranges.
+322|Coin Change|Medium|Dynamic Programming;Knapsack|knapsack_dp;dynamic_programming|Amount states choose coins and reuse smaller amounts.
+347|Top K Frequent Elements|Medium|Array;Hash Table;Heap|arrays_hashing;heap_priority_queue|Count frequencies then retain the top k with a heap.
+394|Decode String|Medium|String;Stack|stack|Stack frames preserve repeat counts and outer strings.
+416|Partition Equal Subset Sum|Medium|Dynamic Programming;Knapsack|knapsack_dp|Subset capacity state checks whether half the total is reachable.
+417|Pacific Atlantic Water Flow|Medium|Grid;Depth First Search|graph_traversal|Reverse traversal from both oceans finds intersecting reachable cells.
+435|Non-overlapping Intervals|Medium|Intervals;Greedy|sorting;intervals;greedy|Sort by end time and keep the earliest finishing compatible interval.
+437|Path Sum III|Medium|Tree;Prefix Sum|tree_traversal;prefix_sums|DFS path prefix counts identify target sum suffixes.
+494|Target Sum|Medium|Dynamic Programming;Knapsack|knapsack_dp;dynamic_programming|Count sign assignments as a target subset sum.
+496|Next Greater Element I|Easy|Array;Monotonic Stack|monotonic_stack|A decreasing stack resolves next greater values.
+518|Coin Change II|Medium|Dynamic Programming;Knapsack|knapsack_dp;dynamic_programming|Amount state counts combinations while iterating each coin once.
+523|Continuous Subarray Sum|Medium|Array;Prefix Sum;Hash Table|prefix_sums;arrays_hashing|Repeated prefix remainder reveals a divisible subarray.
+525|Contiguous Array|Medium|Array;Prefix Sum;Hash Table|prefix_sums;arrays_hashing|Equal transformed prefix sums bound balanced subarrays.
+547|Number of Provinces|Medium|Graph;Union Find|union_find|Union connected cities to count components.
+560|Subarray Sum Equals K|Medium|Array;Prefix Sum;Hash Table|prefix_sums;arrays_hashing|Counts of earlier prefix sums identify matching subarrays.
+567|Permutation in String|Medium|String;Sliding Window|sliding_window;arrays_hashing|Window character counts match a fixed target multiset.
+621|Task Scheduler|Medium|Greedy;Counting|greedy;arrays_hashing|Frequency counts determine a lower bound on idle slots.
+684|Redundant Connection|Medium|Graph;Union Find|union_find|The first edge joining already connected vertices closes a cycle.
+695|Max Area of Island|Medium|Grid;Depth First Search|graph_traversal|Flood fill counts each connected land region.
+704|Binary Search|Easy|Array;Binary Search|binary_search|Halve the sorted search interval after each comparison.
+714|Best Time to Buy and Sell Stock with Transaction Fee|Medium|Dynamic Programming|dynamic_programming|Holding and cash states incorporate the transaction fee.
+743|Network Delay Time|Medium|Graph;Shortest Path|shortest_paths;heap_priority_queue|Dijkstra repeatedly expands the cheapest unsettled vertex.
+746|Min Cost Climbing Stairs|Easy|Dynamic Programming|dynamic_programming|Each step cost reuses the cheaper preceding route.
+739|Daily Temperatures|Medium|Array;Monotonic Stack|monotonic_stack|A decreasing index stack waits for a warmer day.
+787|Cheapest Flights Within K Stops|Medium|Graph;Shortest Path|shortest_paths;dynamic_programming|Bounded edge relaxation tracks cheapest cost by stop count.
+785|Is Graph Bipartite?|Medium|Graph;Breadth First Search|graph_traversal|Traverse edges while assigning opposing colors.
+875|Koko Eating Bananas|Medium|Binary Search|binary_search|Feasibility is monotonic in the proposed eating speed.
+912|Sort an Array|Medium|Array;Sorting|sorting|Comparison sorting orders the values.
+930|Binary Subarrays With Sum|Medium|Array;Prefix Sum|prefix_sums;arrays_hashing|Earlier prefix sum counts give the number of target subarrays.
+973|K Closest Points to Origin|Medium|Array;Heap|heap_priority_queue|A bounded heap retains the closest k points.
+981|Time Based Key-Value Store|Medium|Hash Table;Binary Search|arrays_hashing;binary_search|Per-key ordered timestamps permit binary lookup by time.
+994|Rotting Oranges|Medium|Grid;Breadth First Search|graph_traversal;shortest_paths|Multi-source BFS measures minimum minutes to each reachable orange.
+1004|Max Consecutive Ones III|Medium|Array;Sliding Window|sliding_window|A moving range maintains at most k zeroes.
+1091|Shortest Path in Binary Matrix|Medium|Grid;Shortest Path|shortest_paths;graph_traversal|BFS explores unweighted cells by path length.
+1143|Longest Common Subsequence|Medium|String;Dynamic Programming|dynamic_programming|Prefix pair states reuse neighboring subsequence lengths.
+1353|Maximum Number of Events That Can Be Attended|Medium|Intervals;Heap;Greedy|sorting;heap_priority_queue;greedy|Attend the currently available event with earliest end date.
+1658|Minimum Operations to Reduce X to Zero|Medium|Array;Sliding Window|sliding_window|Find the longest middle window with complementary sum.
+1712|Ways to Split Array Into Three Subarrays|Medium|Array;Prefix Sum;Binary Search|prefix_sums;binary_search|Prefix sums and monotonic boundaries locate valid split positions.
+1803|Count Pairs With XOR in a Range|Hard|Trie;Bit Manipulation|trie;bit_manipulation|A binary trie counts earlier values satisfying XOR bounds.
+2115|Find All Possible Recipes from Given Supplies|Medium|Graph;Topological Sort|topological_sort;graph_traversal|Dependency indegrees unlock recipes once ingredients are available.
+2276|Count Integers in Intervals|Hard|Intervals;Segment Tree|segment_tree;lazy_propagation;intervals|A dynamic segment tree marks covered ranges and defers full coverage updates.
+2338|Count the Number of Ideal Arrays|Hard|Math;Dynamic Programming|math_number_theory;dynamic_programming|Factorizations and combinations count valid multiplicative chains.
+2376|Count Special Integers|Hard|Digit DP;Bitmask|digit_dp;bit_manipulation|Digit position tightness and a used-digit mask count distinct-digit numbers.
+2719|Count of Integers|Hard|Digit DP;Dynamic Programming|digit_dp;dynamic_programming|Digit tightness and running digit sum count bounded valid numbers.
+172|Factorial Trailing Zeroes|Medium|Math;Number Theory|math_number_theory|Count factors of five in the factorial without constructing it.
+204|Count Primes|Medium|Math;Number Theory|math_number_theory|The sieve marks multiples of each prime up to the square root.
+1039|Minimum Score Triangulation of Polygon|Medium|Dynamic Programming|interval_dp;dynamic_programming|Choose a final triangle vertex and combine the two shorter intervals.
