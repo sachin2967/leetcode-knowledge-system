@@ -2,7 +2,10 @@
 
 import csv
 import json
+import os
 import sqlite3
+import tempfile
+from contextlib import closing
 from dataclasses import asdict
 from pathlib import Path
 
@@ -73,37 +76,42 @@ def read_json(path: Path, taxonomy_ids: frozenset[str]) -> tuple[Problem, ...]:
 def write_sqlite(path: Path, problems: tuple[Problem, ...], taxonomy_ids: frozenset[str]) -> None:
     problems = validate_catalog(problems, taxonomy_ids)
     path.parent.mkdir(parents=True, exist_ok=True)
-    # A rebuild replaces a snapshot. Never use this path for user imports.
-    with sqlite3.connect(path) as db:
-        db.executescript("""
-            DROP TABLE IF EXISTS concept_mappings;
-            DROP TABLE IF EXISTS problems;
-            DROP TABLE IF EXISTS metadata;
-            CREATE TABLE metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);
-            CREATE TABLE problems (
-                problem_id INTEGER PRIMARY KEY, title TEXT NOT NULL, difficulty TEXT NOT NULL,
-                tags TEXT NOT NULL, acceptance_rate REAL, source TEXT NOT NULL,
-                collected_at TEXT NOT NULL, notes TEXT NOT NULL
-            );
-            CREATE TABLE concept_mappings (
-                problem_id INTEGER NOT NULL REFERENCES problems(problem_id),
-                concept_id TEXT NOT NULL, reason TEXT NOT NULL,
-                PRIMARY KEY (problem_id, concept_id)
-            );
-        """)
-        db.executemany("INSERT INTO metadata VALUES (?, ?)",
-                       [("catalog_version", CATALOG_VERSION), ("taxonomy_version", TAXONOMY_VERSION)])
-        db.executemany("INSERT INTO problems VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [
-            (p.problem_id, p.title, p.difficulty, json.dumps(p.tags), p.acceptance_rate,
-             p.source, p.collected_at, p.notes) for p in problems
-        ])
-        db.executemany("INSERT INTO concept_mappings VALUES (?, ?, ?)", [
-            (m.problem_id, m.concept_id, m.reason) for p in problems for m in mappings_for(p)
-        ])
+    # Build a fresh snapshot so repeated runs have identical bytes. Replace only
+    # after a successful commit; this path must never hold user imports.
+    with tempfile.NamedTemporaryFile(dir=path.parent, suffix=".sqlite3", delete=False) as handle:
+        temporary_path = Path(handle.name)
+    try:
+        with closing(sqlite3.connect(temporary_path)) as db:
+            with db:
+                db.executescript("""
+                    CREATE TABLE metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+                    CREATE TABLE problems (
+                        problem_id INTEGER PRIMARY KEY, title TEXT NOT NULL, difficulty TEXT NOT NULL,
+                        tags TEXT NOT NULL, acceptance_rate REAL, source TEXT NOT NULL,
+                        collected_at TEXT NOT NULL, notes TEXT NOT NULL
+                    );
+                    CREATE TABLE concept_mappings (
+                        problem_id INTEGER NOT NULL REFERENCES problems(problem_id),
+                        concept_id TEXT NOT NULL, reason TEXT NOT NULL,
+                        PRIMARY KEY (problem_id, concept_id)
+                    );
+                """)
+                db.executemany("INSERT INTO metadata VALUES (?, ?)",
+                               [("catalog_version", CATALOG_VERSION), ("taxonomy_version", TAXONOMY_VERSION)])
+                db.executemany("INSERT INTO problems VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [
+                    (p.problem_id, p.title, p.difficulty, json.dumps(p.tags), p.acceptance_rate,
+                     p.source, p.collected_at, p.notes) for p in problems
+                ])
+                db.executemany("INSERT INTO concept_mappings VALUES (?, ?, ?)", [
+                    (m.problem_id, m.concept_id, m.reason) for p in problems for m in mappings_for(p)
+                ])
+        os.replace(temporary_path, path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
 
 
 def read_sqlite(path: Path, taxonomy_ids: frozenset[str]) -> tuple[Problem, ...]:
-    with sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True) as db:
+    with closing(sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True)) as db:
         metadata = dict(db.execute("SELECT key, value FROM metadata"))
         if metadata != {"catalog_version": CATALOG_VERSION, "taxonomy_version": TAXONOMY_VERSION}:
             raise CatalogValidationError("Catalog or taxonomy version mismatch")

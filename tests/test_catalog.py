@@ -56,9 +56,18 @@ def test_json_and_sqlite_round_trip(tmp_path: Path, problems) -> None:
     write_sqlite(sqlite_path, problems, TAXONOMY)
     assert read_json(json_path, TAXONOMY) == problems
     assert read_sqlite(sqlite_path, TAXONOMY) == problems
+    first_snapshot = sqlite_path.read_bytes()
+    write_sqlite(sqlite_path, problems, TAXONOMY)
+    assert sqlite_path.read_bytes() == first_snapshot
     with sqlite3.connect(sqlite_path) as db:
         reason = db.execute("SELECT reason FROM concept_mappings WHERE problem_id=1").fetchone()[0]
     assert "complement" in reason
+
+
+def test_committed_catalog_exports_match_seed(problems) -> None:
+    sample = ROOT / "data/sample"
+    assert read_json(sample / "catalog_mvp-1.0.json", TAXONOMY) == problems
+    assert read_sqlite(sample / "catalog_mvp-1.0.sqlite3", TAXONOMY) == problems
 
 
 def test_json_rejects_missing_fields_and_wrong_version(tmp_path: Path, problems) -> None:

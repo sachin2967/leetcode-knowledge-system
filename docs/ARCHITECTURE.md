@@ -1,6 +1,6 @@
 # Architecture and locked technical decisions
 
-**Status:** design contract; no application logic is implemented yet.
+**Status:** Milestone 1 catalog ingestion, validation, and local snapshots are implemented. Profile, ranking, retrieval, API, and UI are still planned.
 
 **Source:** Project 1, master BRD Version 2.0 (12 October 2026), with the session's stack choice fixed below.
 
@@ -61,4 +61,13 @@ Node.js, heavy React, a mandatory vector database, and cloud infrastructure are 
 4. **Baseline before sophistication.** Freeze evaluation data and measure tag overlap and popularity before embedding features or learning to rank.
 5. **Local-first storage.** Persist safe catalog and demo data locally; keep personal code and raw imports untracked.
 
-The BRD's implementation schedule is sequenced as metadata/taxonomy, profile, ranking/evaluation, diagnosis, personal retrieval, then API/UI and documentation. This foundation commit intentionally stops before those implementations.
+The BRD's implementation schedule is sequenced as metadata/taxonomy, profile, ranking/evaluation, diagnosis, personal retrieval, then API/UI and documentation. The current repository has completed the metadata/catalog step only.
+
+## Production considerations (out of MVP)
+
+These are deployment decisions to revisit after the local MVP meets its evaluation criteria; they do not add requirements to the current build.
+
+- **Public profile access:** Cache fetched solved lists with an explicit expiry, respect upstream rate limits and terms, and show when cached data may be stale. Use bounded retries and a clear unavailable state when LeetCode cannot be reached.
+- **Reliable hosting:** Choose a host only after checking uptime, persistent storage, resource limits, and cost. Hugging Face Spaces, Azure student credits, and a small always-on instance are candidates, not locked choices. Any ephemeral host needs a deliberate plan for SQLite files and imported submissions.
+- **Frontend evolution:** A React client could later consume the same FastAPI contracts if the demo warrants it. Streamlit remains the MVP UI; a second frontend must not duplicate profile or ranking logic.
+- **Multi-user security:** Hosting private imports for multiple users requires authentication, authorization on every read/write, per-user storage isolation, retention/deletion controls, and secret management before launch. This capability is deferred from the MVP.
