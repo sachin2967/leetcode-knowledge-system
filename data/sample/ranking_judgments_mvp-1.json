@@ -1,0 +1,16 @@
+{
+  "dataset_version": "mvp-1",
+  "catalog_version": "mvp-1.0",
+  "taxonomy_version": "mvp-1",
+  "seed": 42,
+  "candidate_ids": "all IDs in catalog_mvp-1.0.json, frozen by version",
+  "rubric": "2 = directly teaches or applies the named concept; 1 = useful prerequisite or close transfer; 0 = unrelated. Judgments are manual and independent of system scores.",
+  "queries": [
+    {"id": "q1", "split": "train", "text": "two pointers", "concept_ids": ["two_pointers"], "relevance": {"11": 2, "15": 2, "19": 1, "42": 2, "125": 2, "167": 2, "283": 2, "344": 2, "876": 1, "977": 2}},
+    {"id": "q2", "split": "train", "text": "graph traversal", "concept_ids": ["graph_traversal"], "relevance": {"133": 2, "200": 2, "207": 1, "210": 1, "417": 2, "547": 2, "684": 1, "695": 2, "733": 2, "994": 2}},
+    {"id": "q3", "split": "train", "text": "dynamic programming", "concept_ids": ["dynamic_programming"], "relevance": {"70": 2, "198": 2, "213": 2, "300": 2, "322": 2, "416": 2, "518": 2, "1143": 2, "1218": 2}},
+    {"id": "q4", "split": "test", "text": "binary search", "concept_ids": ["binary_search"], "relevance": {"33": 2, "34": 2, "35": 2, "69": 2, "74": 2, "153": 2, "162": 2, "278": 2, "704": 2, "875": 2}},
+    {"id": "q5", "split": "test", "text": "stack", "concept_ids": ["stack"], "relevance": {"20": 2, "71": 2, "84": 2, "150": 2, "155": 2, "394": 2, "496": 2, "739": 2, "901": 2}},
+    {"id": "q6", "split": "test", "text": "sliding window", "concept_ids": ["sliding_window"], "relevance": {"3": 2, "76": 2, "209": 2, "239": 2, "424": 2, "567": 2, "643": 2, "713": 2, "1004": 2}}
+  ]
+}

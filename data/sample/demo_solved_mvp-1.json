@@ -1,0 +1,7 @@
+{
+  "username": "demo_learner",
+  "problem_ids": [1, 20, 21, 70, 104, 121, 141, 200, 206, 217, 226, 704],
+  "source": "Synthetic demo fixture; selected from catalog_mvp-1.0",
+  "collected_at": "2026-10-14",
+  "total_reported": 12
+}
