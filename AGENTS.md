@@ -39,6 +39,13 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 python -m scripts.rebuild_catalog
 python -m pytest
+python -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000
+# In a second terminal using the same environment:
+python -m streamlit run streamlit_app/app.py --server.address 127.0.0.1 --server.port 8501
 ```
 
-The API and UI do not have runnable entry points yet. Update this file and the README when they are introduced.
+M6 entry points are `src.api.app:app` and `streamlit_app/app.py`. The UI calls the API; keep domain logic in the existing packages. `/docs` exposes the request/response contracts. Demo mode is offline; public mode makes an explicit public recent-accept request without persisting history. Tests must mock that boundary.
+
+Bind both services to loopback. Personal import and retrieval require explicit owner acknowledgement, but this is a trusted local tool, not authenticated multi-user hosting. Import sources are relative to ignored `data/raw/`; no arbitrary absolute server paths or code uploads are accepted. Never add real personal-code fixtures.
+
+Commit and push each completed milestone and major change to the configured GitHub remote after applicable local checks. Preserve user changes, use normal pushes, and never force-push or amend without explicit authorization.

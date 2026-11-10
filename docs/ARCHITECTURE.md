@@ -1,6 +1,6 @@
 # Architecture and locked technical decisions
 
-**Status:** Milestones 1–5 provide the catalog, evidence-based profiles, explainable ranking/evaluation, prerequisite diagnosis, and local owner-scoped personal retrieval. API and UI remain planned.
+**Status:** Milestones 1–6 provide the catalog, evidence-based profiles, explainable ranking/evaluation, prerequisite diagnosis, local owner-scoped personal retrieval, and runnable FastAPI/Streamlit integration.
 
 **Source:** Project 1, master BRD Version 2.0 (12 October 2026), with the session's stack choice fixed below.
 
@@ -26,7 +26,7 @@ flowchart LR
     R --> M
 ```
 
-The diagram shows intended data flow, not completed services. Query-based recommendation and concept-gap recommendation share the catalog and ranker. The prerequisite module compares a target's required concepts with the learner profile; it should state evidence and missing concepts, without interpreting the result as a success probability. Retrieval may show only the owner's imported templates and must handle an empty import gracefully.
+The diagram shows implemented local data flow. Query-based recommendation and concept-gap recommendation share the catalog and ranker. The prerequisite module compares a target's required concepts with the learner profile and states evidence and missing concepts, without interpreting the result as a success probability. Retrieval shows only the explicitly selected owner's imported templates and handles an empty import gracefully.
 
 ## Locked stack
 
@@ -61,7 +61,7 @@ Node.js, heavy React, a mandatory vector database, and cloud infrastructure are 
 4. **Baseline before sophistication.** Freeze evaluation data and measure tag overlap and popularity before embedding features or learning to rank.
 5. **Local-first storage.** Persist safe catalog and demo data locally; keep personal code and raw imports untracked.
 
-The BRD's implementation schedule is sequenced as metadata/taxonomy, profile, ranking/evaluation, diagnosis, personal retrieval, then API/UI and documentation. The repository has completed the catalog, profile, and first ranking/evaluation steps.
+The BRD's implementation schedule is sequenced as metadata/taxonomy, profile, ranking/evaluation, diagnosis, personal retrieval, then API/UI and documentation. The local implementation now covers all six delivery milestones; evaluation success remains unproven.
 
 ## Milestone 2 profile decisions and source limitation
 
@@ -82,6 +82,16 @@ The catalog has no frozen acceptance-rate/popularity snapshot (`acceptance_rate`
 Diagnosis uses a small explicit target-ID prerequisite map in `src/knowledge_profile/diagnosis.py`, with catalog concepts as a fallback for unmapped targets. It compares only stable taxonomy IDs against profile evidence; the `covered` status alone satisfies Ready. Emerging and unobserved evidence are returned with supporting IDs and become practice gaps. The path reuses deterministic concept matching and Easy-to-Hard ordering. This is a compact MVP mapping, not a full prerequisite graph.
 
 Personal accepted code is imported only by an explicit call with `owner_authorized=True`. The source must be under ignored `data/raw/`; rows must identify the same owner and be marked accepted. The private corpus is stored beneath a SHA-256-derived owner directory and retrieval validates owner attribution before returning snippets. This boundary is local and opt-in; it is not multi-user authentication or hosted authorization. Missing corpus, empty corpus, and no search match have separate states. No real private code is present in fixtures or tests.
+
+## Milestone 6 transport and demo
+
+`src/api/app.py` loads validated taxonomy and SQLite snapshots at startup. Strict Pydantic request models reject extra fields, unknown modes, invalid usernames, invalid difficulty, and unbounded limits. Existing domain dataclasses define response schemas in OpenAPI. `/profiles` builds a demo or public profile; `/practice` returns profile, query recommendations, and optional target diagnosis/path using one history fetch. Unknown concept IDs and targets are rejected before any public I/O. Sync handlers run blocking public requests in FastAPI's worker thread pool; upstream timeouts become a recoverable 503. No live history is persisted or cached by the API.
+
+`streamlit_app/app.py` is an HTTP-only client. It displays evidence, supporting IDs, uncertainty, source dates, recommendation reasons, prerequisite coverage, and ordered gap practice. Public mode is explicitly submitted and retains the bounded-history warning. One plan result stays in Streamlit session state until replaced; a failed submission clears the previous result. Personal results are not cached in application state.
+
+Personal import and retrieval have separate endpoints and an owner acknowledgement required for both. Import accepts only a relative path beneath ignored `data/raw/`, delegates resolved-path containment and owner validation to the existing importer, and replaces the owner's corpus. Public username selection never implies personal-code authorization. This is a trusted local workflow; both services bind to loopback in the documented commands. Authentication, remote hosting, concurrent import coordination, and production upload controls remain outside this milestone.
+
+No contract discrepancy or scope expansion was needed for M6. The existing frozen judgments include relevance IDs outside the catalog candidate pool; they were preserved. A future versioned evaluation revision must reconcile that mismatch and obtain a real popularity snapshot before claiming the BRD ranking criterion.
 
 ## Production considerations (out of MVP)
 
