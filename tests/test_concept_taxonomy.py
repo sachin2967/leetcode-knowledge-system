@@ -3,7 +3,6 @@
 import re
 from pathlib import Path
 
-
 TAXONOMY = Path(__file__).resolve().parents[1] / "docs" / "CONCEPT_TAXONOMY.md"
 MVP_CONCEPT_IDS = {
     "arrays_hashing",

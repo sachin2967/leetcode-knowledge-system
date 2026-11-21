@@ -54,3 +54,26 @@ class TemplateRequest(OwnerRequest):
 
 class ImportResponse(BaseModel):
     imported: int
+
+
+class MentorRequest(RequestModel):
+    problem_id: int = Field(gt=0, strict=True)
+    question: str = Field(min_length=1, max_length=500)
+    level: int = Field(default=1, ge=1, le=4, strict=True)
+
+
+class GraphResponse(BaseModel):
+    version: str
+    prerequisites: dict[str, tuple[str, ...]]
+
+
+class MentorResponse(BaseModel):
+    problem_id: int
+    title: str
+    level: int
+    level_name: str
+    hint: str
+    retrieved_concepts: tuple[str, ...]
+    retrieved_evidence: tuple[str, ...]
+    generation_mode: str
+    safety: str

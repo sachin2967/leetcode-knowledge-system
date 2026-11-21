@@ -8,7 +8,6 @@ from pathlib import Path
 
 from src.data.models import Problem
 
-
 _USER = re.compile(r"[A-Za-z0-9_-]{1,30}\Z")
 _FIELDS = {"owner", "problem_id", "title", "language", "accepted", "code"}
 
@@ -38,8 +37,9 @@ def _key(owner: str) -> str:
     return hashlib.sha256(owner.casefold().encode("utf-8")).hexdigest()
 
 
-def import_accepted_code(owner: str, source: Path, data_root: Path, *,
-                         owner_authorized: bool = False) -> int:
+def import_accepted_code(
+    owner: str, source: Path, data_root: Path, *, owner_authorized: bool = False
+) -> int:
     """Import a JSON array of accepted snippets; explicit owner opt-in required.
 
     Source must be under data/raw. Private imports are stored beneath a hashed,
@@ -64,29 +64,55 @@ def import_accepted_code(owner: str, source: Path, data_root: Path, *,
     for row in rows:
         if not isinstance(row, dict) or set(row) != _FIELDS:
             raise PersonalCodeError("Snippet fields mismatch")
-        if (not isinstance(row["owner"], str) or row["owner"].casefold() != owner.casefold()
-                or row["accepted"] is not True or isinstance(row["problem_id"], bool)
-                or not isinstance(row["problem_id"], int) or row["problem_id"] <= 0
-                or not isinstance(row["title"], str) or not row["title"].strip()
-                or not isinstance(row["language"], str) or not row["language"].strip()
-                or not isinstance(row["code"], str) or not row["code"].strip()):
-            raise PersonalCodeError("Only complete, owner-matched accepted snippets can be imported")
+        if (
+            not isinstance(row["owner"], str)
+            or row["owner"].casefold() != owner.casefold()
+            or row["accepted"] is not True
+            or isinstance(row["problem_id"], bool)
+            or not isinstance(row["problem_id"], int)
+            or row["problem_id"] <= 0
+            or not isinstance(row["title"], str)
+            or not row["title"].strip()
+            or not isinstance(row["language"], str)
+            or not row["language"].strip()
+            or not isinstance(row["code"], str)
+            or not row["code"].strip()
+        ):
+            raise PersonalCodeError(
+                "Only complete, owner-matched accepted snippets can be imported"
+            )
         marker = (row["problem_id"], row["language"].casefold())
         if marker in seen:
             raise PersonalCodeError("Duplicate problem/language snippet")
         seen.add(marker)
-        clean.append({"owner": owner, "problem_id": row["problem_id"], "title": row["title"].strip(),
-                      "language": row["language"].strip(), "accepted": True, "code": row["code"]})
+        clean.append(
+            {
+                "owner": owner,
+                "problem_id": row["problem_id"],
+                "title": row["title"].strip(),
+                "language": row["language"].strip(),
+                "accepted": True,
+                "code": row["code"],
+            }
+        )
     destination = data_root / "raw" / "personal_corpora" / owner_key / "accepted.json"
     destination.parent.mkdir(parents=True, exist_ok=True)
     temp = destination.with_suffix(".tmp")
-    temp.write_text(json.dumps(clean, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temp.write_text(
+        json.dumps(clean, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     temp.replace(destination)
     return len(clean)
 
 
-def retrieve_templates(owner: str, query: str, catalog: tuple[Problem, ...],
-                       data_root: Path, *, taxonomy_ids: frozenset[str]) -> TemplateSearch:
+def retrieve_templates(
+    owner: str,
+    query: str,
+    catalog: tuple[Problem, ...],
+    data_root: Path,
+    *,
+    taxonomy_ids: frozenset[str],
+) -> TemplateSearch:
     """Retrieve only from this owner's corpus by locked concept IDs or title/tags."""
     path = data_root / "raw" / "personal_corpora" / _key(owner) / "accepted.json"
     if not path.exists():
@@ -103,15 +129,32 @@ def retrieve_templates(owner: str, query: str, catalog: tuple[Problem, ...],
         raise PersonalCodeError("Catalog contains concepts outside the locked taxonomy")
     matches = []
     for row in rows:
-        if not isinstance(row, dict) or set(row) != _FIELDS or row.get("accepted") is not True:
+        if (
+            not isinstance(row, dict)
+            or set(row) != _FIELDS
+            or row.get("accepted") is not True
+        ):
             raise PersonalCodeError("Stored corpus failed validation")
         if row.get("owner", "").casefold() != owner.casefold():
             raise PersonalCodeError("Stored corpus owner mismatch")
         problem = by_id.get(row.get("problem_id"))
         corpus_terms = set()
         if problem:
-            corpus_terms.update(re.findall(r"[a-z0-9_]+", (problem.title + " " + " ".join(problem.tags)).casefold()))
+            corpus_terms.update(
+                re.findall(
+                    r"[a-z0-9_]+",
+                    (problem.title + " " + " ".join(problem.tags)).casefold(),
+                )
+            )
             corpus_terms.update(problem.concepts)
         if terms and terms & (corpus_terms | set(row["title"].casefold().split())):
-            matches.append(TemplateSnippet(row["owner"], row["problem_id"], row["title"], row["language"], row["code"]))
+            matches.append(
+                TemplateSnippet(
+                    row["owner"],
+                    row["problem_id"],
+                    row["title"],
+                    row["language"],
+                    row["code"],
+                )
+            )
     return TemplateSearch("available" if matches else "no_matches", tuple(matches))

@@ -1,8 +1,8 @@
-# LeetCode Knowledge-Aware Practice System
+# LeetCode Knowledge-Aware RAG & Socratic Practice Mentor
 
 Project 1 of the ML portfolio described in the master BRD (Version 2.0, 12 October 2026). The intended system uses a learner's public solved history to identify concept coverage, diagnose prerequisites for a target problem, and recommend an ordered practice path. If the learner imports their own accepted submissions, it can also retrieve relevant personal code templates.
 
-**Current status:** Milestones 1–6 implemented locally: curated catalog, evidence profiles, explainable ranking/offline evaluation, prerequisite diagnosis and gap practice paths, owner-scoped accepted-code retrieval, and FastAPI/Streamlit integration. Ranking success criteria remain unproven; see the evaluation boundaries below.
+**Current status:** Complete local portfolio application: a 28-concept prerequisite DAG, solved-history evidence profiles, diagnosis and recommendations, retrieval-grounded Socratic hints, input/output guardrails, opt-in owner-scoped template search, FastAPI/Streamlit, and offline evaluation. It is packaged for trusted local deployment. Public hosting with personal-code access is deliberately not enabled.
 
 ## Read first
 
@@ -17,6 +17,7 @@ Project 1 of the ML portfolio described in the master BRD (Version 2.0, 12 Octob
 | --- | --- |
 | `src/data/` | Public problem metadata, solved-list ingestion, and local persistence |
 | `src/knowledge_profile/` | Concept evidence and prerequisite diagnosis |
+| `src/mentor/` | Local retrieval, progressive hints, and guardrails |
 | `src/ranking/` | Candidate generation, baselines, and ranking |
 | `src/evaluation/` | Frozen judgments, metrics, and experiment reports |
 | `src/api/` | FastAPI application and request/response models |
@@ -33,7 +34,7 @@ Use Python 3.11 or newer. In PowerShell:
 ```powershell
 python -m venv .venv
 .venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
 python -m scripts.rebuild_catalog
 python -m pytest
 ```
@@ -56,14 +57,30 @@ python -m streamlit run streamlit_app/app.py --server.address 127.0.0.1 --server
 
 Open http://127.0.0.1:8501 for the demo and http://127.0.0.1:8000/docs for interactive API contracts. The API validates the local SQLite catalog and taxonomy at startup; rebuild the catalog if the snapshot is absent. The UI defaults to that loopback API; set `LKS_API_URL` before starting Streamlit to override it. No credentials, external model, or private data are needed for demo mode.
 
+## Container deployment and optional local LLM
+
+The containerized deployment keeps host ports on loopback. From the repository root:
+
+```powershell
+Copy-Item .env.example .env
+docker compose up --build -d
+docker compose ps
+```
+
+Open http://127.0.0.1:8501. The API docs are at http://127.0.0.1:8000/docs. `data/raw/` is mounted for the owner's explicit local imports and remains ignored by Git. Stop with `docker compose down`; persistent personal data remains in `data/raw/`. To rebuild after source changes, rerun `docker compose up --build -d`.
+
+The app works offline using deterministic retrieval and hint cards. For optional local generation, install and start Ollama on the same machine, pull a model supported by your hardware, then set `LKS_OLLAMA_MODEL` in `.env`. The compose default points to `host.docker.internal:11434`. Restart the stack after changing `.env`. Model-generated text is passed through the same output guardrail; if local generation is unavailable the mentor returns a recoverable error. No remote model endpoint is accepted. The adapter uses Ollama's local `/api/chat` endpoint ([API reference](https://docs.ollama.com/api/chat)).
+
 Select **demo**, choose target **76: Minimum Window Substring**, and submit to see evidence, missing prerequisite coverage, and the Easy-to-Hard gap path. Query text and optional stable concept IDs produce recommendations with reasons. Difficulty is a ranking preference, not a hard filter; scores are ordering signals, not probabilities. Empty matches produce an empty list. Select **public** and enter a username to explicitly fetch bounded recent public accepts; the UI shows source, collection date, unmapped IDs, and incomplete-history uncertainty. Each submitted plan makes at most one public fetch. Profile results remain in the current UI session until replaced; the API does not persist or cache them.
 
 | Endpoint | Contract |
 | --- | --- |
 | `GET /health` | Loaded service health |
 | `GET /catalog`, `GET /concepts` | Validated catalog and locked concept IDs |
+| `GET /concept-graph` | Versioned prerequisite DAG covering the 28 stable concept IDs |
 | `POST /profiles` | `{ "mode": "demo" }` or `{ "mode": "public", "username": "..." }` |
 | `POST /practice` | Source, query, concepts, optional difficulty/target ID, and limit (1–50); returns profile, recommendations, and optional diagnosis/path |
+| `POST /mentor` | `{ "problem_id": 76, "question": "How should I start?", "level": 1 }`; returns one retrieved hint level (1–4) |
 | `POST /personal/import` | Owner, explicit `owner_authorized: true`, and JSON source path relative to ignored `data/raw/`; replaces that owner's corpus |
 | `POST /personal/templates` | Owner, explicit acknowledgement, and search query; returns attributed snippets or an explicit unavailable/empty/no-match state |
 
@@ -76,6 +93,8 @@ Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/practice -ContentType 
 
 Invalid inputs return 422, missing catalog targets 404, missing owner acknowledgement 403, and unavailable public history 503 with a demo fallback suggestion. The UI reports connection errors if the API is stopped. Personal access is a separate opt-in form: public usernames never automatically open a corpus. Import uses an existing owner-created local JSON file; it does not upload or fetch submission code. Both services are for a trusted local machine and must stay on loopback; owner acknowledgement is not authentication for hosted multi-user use.
 
+Mentor requests are problem-scoped. The service rejects common prompt overrides, direct full-code requests, and unrelated questions. It retrieves a curated concept hint and catalog invariant, then reveals one of four progressive levels. The output filter uses regex and Python AST/code-shape checks. These are defense-in-depth checks, not a proof against all attacks; the optional model is local-only and model/version-specific safety still requires separate review. The mentor never retrieves accepted user code.
+
 ## Build a concept profile
 
 ```powershell
@@ -83,7 +102,7 @@ python -m scripts.build_profile --demo
 python -m scripts.build_profile --username lee215
 ```
 
-Demo mode reads the [synthetic solved fixture](data/sample/demo_solved_mvp-1.json) and requires no network. Username mode makes one public GraphQL request and prints a profile without storing the learner's history. The public endpoint currently exposes recent accepted submissions and a total count, not a full solved-problem list. When recent slugs cannot be matched to the local catalog, the output reports them and shows incomplete evidence. Each concept includes its supporting catalog problem IDs and a simple evidence level: 0 solves = `unobserved`, 1 = `emerging`, 2 or more = `covered`. The numeric score is a threshold label, not a solve probability. See [profile decisions](docs/ARCHITECTURE.md) for limitations.
+Demo mode reads the [synthetic solved fixture](data/sample/demo_solved_mvp-1.json) and requires no network. Username mode makes one public GraphQL request and prints a profile without storing the learner's history. The public endpoint currently exposes recent accepted submissions and a total count, not a full solved-problem list or solve timestamps. Recent list order is used as a recency proxy. Concept evidence combines difficulty-weighted solves with a recency decay and noisy-OR frequency aggregation; `covered` also requires two distinct solves. Confidence is a heuristic score, not a mastery or solve probability. Supporting problem IDs and uncertainty are returned with every profile. See [profile decisions](docs/ARCHITECTURE.md) for limitations.
 
 ## Rank recommendations and evaluate offline
 
@@ -95,9 +114,11 @@ The ranker supports query-based recommendations and easier-to-harder practice pa
 
 On the three held-out queries, concept-aware ranking scores NDCG@10 **0.9564**, Recall@5 **0.8571**, and MAP **0.9045** (tag overlap: **0.8302 / 0.6905 / 0.7917**). These metrics use only judgments in the frozen 111-problem pool; out-of-pool labels are disclosed in the report. The “popularity” comparator is an ID-order fallback because acceptance rates are unavailable, so this is not evidence of beating a genuine popularity baseline. With only three held-out queries and hand-curated labels, these results are descriptive, not a general ranking-quality claim. A larger re-judged pool and sourced, dated popularity snapshot are required before asserting the BRD's baseline success criterion.
 
+Guardrails are evaluated independently with `python -m scripts.evaluate_guardrails`. The frozen [challenge set](data/sample/guardrail_cases_v1.json) covers injection, solution requests, out-of-scope input, benign help requests, and executable-output shapes. The current report records **16/16** input decisions and **11/11** output decisions on that small authored set; it is a regression check, not a guarantee. See [the report](data/sample/guardrail_report_v1.json) for confusion counts and limitations.
+
 ## Diagnose prerequisites
 
-`src.knowledge_profile.diagnosis.diagnose_target` compares a catalog target against a compact, reviewed prerequisite map (with target concepts as a fallback). It reports each prerequisite's evidence level and supporting problem IDs. Only `covered` evidence meets the Ready threshold; emerging or unobserved concepts appear as gaps, and an ordered Easy-to-Hard practice path is returned for those gaps. This is a coverage explanation, never a solve-probability estimate. The prerequisite map is intentionally small and should be reviewed as catalog coverage grows.
+`src.knowledge_profile.prerequisite_graph` defines a versioned DAG across all 28 stable taxonomy IDs. Diagnosis expands each curated target mapping through transitive prerequisites and reports evidence IDs. Only `covered` evidence meets the Ready threshold; emerging or unobserved concepts appear as gaps, and an ordered Easy-to-Hard practice path is returned. This is a coverage explanation, never a solve-probability estimate. The edges are a reviewed teaching scaffold, not universal requirements for every problem.
 
 ## Import and retrieve your accepted code (local only)
 
@@ -107,7 +128,22 @@ Place an owner-authorized JSON array in ignored `data/raw/` with fields `owner`,
 
 `python -m pytest` covers domain behavior, API validation/error contracts, mocked public profiles, owner isolation and import containment, and Streamlit form journeys against the local API. All personal-code test content is synthetic and temporary. No test depends on live LeetCode responses.
 
-M6 was checked with Python 3.11.4, FastAPI 0.162.3, Streamlit 1.67.0, and HTTPX 0.28.1: **48 tests passed**. Both server entry points started on loopback, their health endpoints responded, and a running API returned the demo target-76 plan. Catalog rebuild and offline evaluation reproduced the existing snapshots/report byte-for-byte; the demo profile CLI also ran successfully. The installed Starlette test client emits an HTTPX deprecation warning; tests currently pass. Public network availability was not tested, and no private data was fetched.
+The original M6 run passed **48 tests**. The expanded project now has a **64-test** local suite and separate ranking and guardrail evaluation scripts. Docker Compose config validates, but this environment has no running Docker engine, so image build and container startup could not be exercised here. The API and Streamlit UI were smoke-checked on loopback: the health, concept graph, and mentor hint requests returned successfully, and the UI returned HTTP 200. GitHub Actions runs lint, tests, both offline evaluations, Compose validation, and a container build/API/UI smoke test. The installed Starlette test client emits an HTTPX deprecation warning; no tests depend on live LeetCode responses or an installed local LLM.
+
+Run the checks with:
+
+```powershell
+python -m pytest
+python -m scripts.evaluate_ranking
+python -m scripts.evaluate_guardrails
+python -m ruff check src tests scripts streamlit_app
+```
+
+## Resume-safe project summary
+
+> Built a local-first LeetCode practice mentor with a 28-concept prerequisite DAG, recency/difficulty/frequency-weighted learner evidence, explainable recommendations, and a four-level retrieval-grounded Socratic mentor. Added regex/AST response screening, optional local Ollama generation, and FastAPI/Streamlit with loopback Docker Compose deployment; offline ranking reached NDCG@10 0.956 vs 0.830 tag overlap on three held-out queries, while a 27-case authored guardrail suite passed.
+
+Qualify the metrics in interviews: the ranking set is tiny and hand-judged, the popularity comparator is not backed by real popularity data, and the guardrail set does not establish a safety guarantee. Do not claim active users, production-scale hosting, or a genuine popularity-baseline win without additional evidence.
 
 ## Delivery sequence
 

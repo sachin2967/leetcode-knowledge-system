@@ -1,6 +1,6 @@
 # Business Requirements — LeetCode Knowledge-Aware Practice System
 
-**Status:** MVP scope frozen for repository foundation.
+**Status:** Original foundation MVP superseded by the explicit scope amendment below.
 
 **Source:** *Final BRD & Implementation Guide | 3 ML Portfolio Projects*, Version 2.0, 12 October 2026, Project 1 (pages 2–3).
 
@@ -33,8 +33,11 @@ Public solved history is sufficient for personalization. Personal code is only a
 | M5 | Retrieve personal code templates from accepted submissions imported by that user. | Opt-in import returns attributed snippets from that user's own corpus; no corpus means a clear unavailable state. |
 | M6 | Expose core behavior through FastAPI and a simple Streamlit demo. | Demo mode and public-username mode can be exercised through the UI and API. |
 | M7 | Evaluate ranking offline. | Reproducible results report NDCG@10, Recall@K, and MAP against tag-overlap and popularity baselines. |
+| M8 | Diagnose prerequisites over a versioned DAG containing all 28 locked concept IDs. | Graph validates exact taxonomy coverage and acyclicity; diagnosis expands transitive ancestors with evidence. |
+| M9 | Offer progressive retrieval-grounded hints with strict practice-mode safety checks. | Four-level hint endpoint; injection, solution request, out-of-domain and executable-output challenge set. |
+| M10 | Package a repeatable local deployment. | Docker Compose configuration exposes UI/API on loopback and persists ignored local imports. |
 
-The concept/pattern graph, polished template cleaning, and weak-area analytics are later enhancements. A compact prerequisite mapping needed for M2 is part of MVP, but a full graph is not required.
+Polished template cleaning and weak-area analytics remain later enhancements. The original foundation MVP did not require a full graph or mentor generation; owner scope amendment below adds these features.
 
 ## Boundaries and non-goals
 
@@ -61,3 +64,11 @@ Record query definitions, candidate set, relevance rubric, split, baseline confi
 | Demo and evaluation fixtures | Small, reproducible samples with documented provenance | Keep safe sample fixtures in Git; keep raw imports and generated personal data out of Git. |
 
 The locked taxonomy in [CONCEPT_TAXONOMY.md](CONCEPT_TAXONOMY.md) is the controlled vocabulary for problem mappings, profile evidence, and missing-concept explanations. Concept extraction and profile scoring remain implementation work.
+
+## Scope amendment — Socratic mentor and deployment (22 November 2026)
+
+The project owner explicitly requested completion of the portfolio concept **LeetCode Knowledge-Aware RAG & Socratic Practice Mentor**, overriding the original foundation-MVP non-goals. This amendment adds difficulty/recency/frequency-weighted profile evidence, a versioned prerequisite DAG over the existing 28 taxonomy IDs, retrieval-grounded progressive hints, request/output safety checks, guardrail evaluation, and a reproducible local container deployment. It does not change any taxonomy ID or its meaning.
+
+The mentor uses a deterministic local retrieval index over curated pattern cards and catalog invariants. It uses deterministic hints by default and can optionally call an Ollama model on the same machine. No remote LLM is called. The output filter screens generated text before returning it. The mentor refuses common code requests, prompt overrides, and unrelated questions. “RAG” means retrieval-grounded hint assembly; optional local generation is not a measured model-quality claim.
+
+Deployment means a containerized trusted local application with both ports bound to loopback and local persistent storage. Public hosting and multi-user exposure remain out of scope until authentication, authorization, rate limiting, retention, and operational controls are implemented. No production security claim should be made for the owner acknowledgement field.

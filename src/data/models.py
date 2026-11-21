@@ -2,7 +2,6 @@
 
 from dataclasses import dataclass
 
-
 CATALOG_VERSION = "mvp-1.0"
 TAXONOMY_VERSION = "mvp-1"
 

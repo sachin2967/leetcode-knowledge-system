@@ -3,6 +3,7 @@
   "catalog_version": "mvp-1.0",
   "taxonomy_version": "mvp-1",
   "seed": 42,
+  "provenance": "Manually authored offline queries and relevance labels; candidate IDs are frozen from catalog_mvp-1.0.json.",
   "candidate_ids": "all IDs in catalog_mvp-1.0.json, frozen by version",
   "rubric": "2 = directly teaches or applies the named concept; 1 = useful prerequisite or close transfer; 0 = unrelated. Judgments are manual and independent of system scores.",
   "queries": [

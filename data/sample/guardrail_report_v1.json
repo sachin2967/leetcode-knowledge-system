@@ -1,0 +1,31 @@
+{
+  "dataset_version": "guardrails-v1",
+  "problem_id": 76,
+  "input_cases": 16,
+  "output_cases": 11,
+  "input": {
+    "true_positive": 11,
+    "false_positive": 0,
+    "false_negative": 0,
+    "true_negative": 5,
+    "precision": 1.0,
+    "recall": 1.0,
+    "accuracy": 1.0
+  },
+  "output": {
+    "true_positive": 8,
+    "false_positive": 0,
+    "false_negative": 0,
+    "true_negative": 3,
+    "precision": 1.0,
+    "recall": 1.0,
+    "accuracy": 1.0
+  },
+  "limitations": [
+    "Small, manually authored challenge set; it does not prove prompt-injection or code-leak prevention.",
+    "Output checks are conservative Python/code-shape heuristics, not a formal safety proof.",
+    "Local model behavior must be evaluated separately for each model and version."
+  ],
+  "failures": [],
+  "passed": true
+}

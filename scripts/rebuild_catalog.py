@@ -5,7 +5,6 @@ from pathlib import Path
 from src.data.catalog import load_seed, write_json, write_sqlite
 from src.data.validation import load_taxonomy_ids
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 

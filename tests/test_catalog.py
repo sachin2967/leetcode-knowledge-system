@@ -8,8 +8,12 @@ from pathlib import Path
 import pytest
 
 from src.data.catalog import load_seed, read_json, read_sqlite, write_json, write_sqlite
-from src.data.validation import CatalogValidationError, load_taxonomy_ids, validate_catalog, validate_problem
-
+from src.data.validation import (
+    CatalogValidationError,
+    load_taxonomy_ids,
+    validate_catalog,
+    validate_problem,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 TAXONOMY = load_taxonomy_ids(ROOT / "docs/CONCEPT_TAXONOMY.md")
@@ -33,12 +37,20 @@ def test_seed_size_coverage_and_known_mappings(problems) -> None:
     assert by_id[2276].concepts == ("segment_tree", "lazy_propagation", "intervals")
 
 
-@pytest.mark.parametrize("changes", [
-    {"problem_id": 0}, {"title": ""}, {"difficulty": "Expert"},
-    {"tags": ()}, {"concepts": ("unknown_id",)},
-    {"source": ""}, {"collected_at": "yesterday"},
-    {"acceptance_rate": 101.0}, {"notes": ""},
-])
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"problem_id": 0},
+        {"title": ""},
+        {"difficulty": "Expert"},
+        {"tags": ()},
+        {"concepts": ("unknown_id",)},
+        {"source": ""},
+        {"collected_at": "yesterday"},
+        {"acceptance_rate": 101.0},
+        {"notes": ""},
+    ],
+)
 def test_invalid_problem_fields_rejected(problems, changes) -> None:
     with pytest.raises(CatalogValidationError):
         validate_problem(replace(problems[0], **changes), TAXONOMY)
@@ -60,7 +72,9 @@ def test_json_and_sqlite_round_trip(tmp_path: Path, problems) -> None:
     write_sqlite(sqlite_path, problems, TAXONOMY)
     assert sqlite_path.read_bytes() == first_snapshot
     with sqlite3.connect(sqlite_path) as db:
-        reason = db.execute("SELECT reason FROM concept_mappings WHERE problem_id=1").fetchone()[0]
+        reason = db.execute(
+            "SELECT reason FROM concept_mappings WHERE problem_id=1"
+        ).fetchone()[0]
     assert "complement" in reason
 
 
@@ -70,7 +84,9 @@ def test_committed_catalog_exports_match_seed(problems) -> None:
     assert read_sqlite(sample / "catalog_mvp-1.0.sqlite3", TAXONOMY) == problems
 
 
-def test_json_rejects_missing_fields_and_wrong_version(tmp_path: Path, problems) -> None:
+def test_json_rejects_missing_fields_and_wrong_version(
+    tmp_path: Path, problems
+) -> None:
     path = tmp_path / "catalog.json"
     write_json(path, problems, TAXONOMY)
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -88,7 +104,8 @@ def test_seed_rejects_unknown_concept(tmp_path: Path) -> None:
     path = tmp_path / "seed.psv"
     path.write_text(
         "problem_id|title|difficulty|tags|concepts|notes\n"
-        "1|Two Sum|Easy|Array|made_up|Unknown mapping\n", encoding="utf-8"
+        "1|Two Sum|Easy|Array|made_up|Unknown mapping\n",
+        encoding="utf-8",
     )
     with pytest.raises(CatalogValidationError, match="unknown concepts"):
         load_seed(path, TAXONOMY)

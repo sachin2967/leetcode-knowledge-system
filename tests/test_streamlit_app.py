@@ -9,7 +9,6 @@ from streamlit.testing.v1 import AppTest
 from src.api.app import create_app
 from src.data.solved import SolvedList, SolvedListError
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -23,11 +22,14 @@ def test_ui_demo_public_and_personal_opt_in(monkeypatch) -> None:
         return SolvedList(username, (1,), "mock public", "2026-10-14", 20)
 
     with TestClient(create_app(public_fetcher=fetch)) as client:
+
         def request(method, url, *, json=None, **kwargs):
             return client.request(method, url, json=json)
 
         monkeypatch.setattr(httpx, "request", request)
-        app = AppTest.from_file(str(ROOT / "streamlit_app/app.py"), default_timeout=20).run()
+        app = AppTest.from_file(
+            str(ROOT / "streamlit_app/app.py"), default_timeout=20
+        ).run()
         assert not app.exception
         app.selectbox[1].set_value(76)
         app.button[0].click().run()

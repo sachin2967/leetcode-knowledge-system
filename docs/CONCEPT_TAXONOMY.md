@@ -24,7 +24,7 @@
 | `graph_traversal` | Graph traversal | Explore vertices and edges with DFS/BFS while tracking visited state. |
 | `topological_sort` | Topological ordering | Order nodes in a directed acyclic graph so prerequisites precede dependents. |
 | `union_find` | Disjoint set union | Maintain connected components under merges with find and union operations. |
-| `shortest_paths` | Shortest paths | Compute minimum-cost reachability with BFS or weighted-path algorithms under valid assumptions. |
+| `shortest_paths` | Shortest paths | Compute minimum-cost reachability with BFS, 0-1 BFS, Dijkstra, or other weighted-path algorithms under valid edge-weight assumptions. |
 | `dynamic_programming` | Dynamic programming | Define reusable states and transitions over overlapping subproblems. |
 | `knapsack_dp` | Knapsack DP | Optimize or count choices under a capacity or target-sum constraint. |
 | `interval_dp` | Interval DP | Solve subranges by combining results of shorter ranges or split points. |

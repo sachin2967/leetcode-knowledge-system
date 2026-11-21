@@ -1,6 +1,6 @@
 # Architecture and locked technical decisions
 
-**Status:** Milestones 1–6 provide the catalog, evidence-based profiles, explainable ranking/evaluation, prerequisite diagnosis, local owner-scoped personal retrieval, and runnable FastAPI/Streamlit integration.
+**Status:** Scope amendment adds the 28-node prerequisite DAG, retrieval-grounded Socratic mentor, optional local Ollama generation, input/output guardrails, guardrail evaluation, and loopback-only container deployment to the completed M1–M6 workflows.
 
 **Source:** Project 1, master BRD Version 2.0 (12 October 2026), with the session's stack choice fixed below.
 
@@ -14,7 +14,13 @@ flowchart LR
     C --> K
     C --> R[Candidate retrieval and ranking]
     K --> D[Prerequisite diagnosis]
+    G[28-node prerequisite DAG] --> D
     K --> R
+    C --> Q[Pattern cards and invariants]
+    Q --> H[Socratic retrieval and hint ladder]
+    H --> A
+    H --> L[Optional local Ollama]
+    L --> A
     D --> R
     S[Owner-imported accepted submissions] --> T[(Private local template index)]
     T --> X[Personal template retrieval]
@@ -60,6 +66,9 @@ Node.js, heavy React, a mandatory vector database, and cloud infrastructure are 
 3. **Prerequisite coverage has narrow meaning.** “Ready” is an explanation of recorded concept coverage, not a calibrated prediction.
 4. **Baseline before sophistication.** Freeze evaluation data and measure tag overlap and popularity before embedding features or learning to rank.
 5. **Local-first storage.** Persist safe catalog and demo data locally; keep personal code and raw imports untracked.
+6. **Socratic scope amendment.** Pattern cards and catalog invariants are retrieved locally. Deterministic hints work offline; optional Ollama generation is local-only. Input validation blocks common prompt overrides, direct solution requests, and out-of-domain questions. Generated output is screened before it can leave the mentor.
+7. **Reviewed prerequisite scaffold.** `concept-dag-1` maps exactly the 28 frozen taxonomy IDs. Diagnosis recursively expands prerequisites. The graph is educational guidance and requires human review, not a universal dependency model.
+8. **Container boundary.** Docker Compose maps both API and UI ports to host loopback and persists owner imports in ignored `data/raw/`. The container processes listen on their internal interfaces for port forwarding; this is not permission to expose ports publicly.
 
 The BRD's implementation schedule is sequenced as metadata/taxonomy, profile, ranking/evaluation, diagnosis, personal retrieval, then API/UI and documentation. The local implementation now covers all six delivery milestones; evaluation success remains unproven.
 
@@ -69,17 +78,17 @@ The demo's accepted IDs are a synthetic, versioned fixture. For a public usernam
 
 Recent accepted title slugs are matched to normalized local catalog titles. Unknown slugs remain reported as unmapped. This is a best-effort join until a stable public frontend ID can be retrieved for each submission; it never invents a concept mapping. The fetcher requests no private submission code or credentials and does not persist live history.
 
-Each distinct mapped accepted problem contributes one evidence item to every concept curated for that problem. One solve is `emerging` with an evidence score of 0.5; two or more are `covered` with score 1.0; no solve is `unobserved` with score 0. These scores are transparent thresholds, not calibrated mastery or success probabilities. Multi-concept mappings and helped solves can overstate familiarity; sparse public history understates evidence. The profile includes the supporting problem IDs and uncertainty notes.
+Each distinct mapped accepted problem contributes difficulty-weighted evidence to every curated concept. Easy, Medium, and Hard contribute 0.40, 0.50, and 0.60 respectively, multiplied by a recency factor `0.5 + 0.5 * exp(-rank / 10)` where rank zero is the most recent available accepted solve. Evidence combines as noisy-OR; `covered` requires at least two solves and confidence >=0.55, `emerging` is any observed evidence below that threshold, and no solve is `unobserved`. Scores are heuristics, not calibrated mastery or success probabilities. The public source provides only bounded recent accepts; older history and dates are unavailable. Multi-concept mappings and helped solves can overstate familiarity; sparse public history understates evidence.
 
 ## Milestone 3 ranking and evaluation decisions
 
-`data/sample/ranking_judgments_mvp-1.json` freezes six query definitions, the complete versioned catalog as the candidate pool, 0–2 manual relevance grades, and query-level train/test assignments before any evaluation output is written. The ranker does not read judgment grades. `scripts/evaluate_ranking.py` reports the held-out split using the same candidate set for tag overlap, a popularity fallback, and concept-aware ranking. Metrics are implemented separately in `src/evaluation/metrics.py`; higher relevance grades receive exponential gain for NDCG, while Recall@10 and MAP treat any positive grade as relevant.
+`data/sample/ranking_judgments_mvp-1.json` freezes six query definitions, the versioned catalog candidate pool, 0–2 manual relevance grades, and query-level train/test assignments before evaluation output is written. Some judged IDs are outside the catalog; they remain in the fixture and are disclosed per query but excluded from attainable relevance. The ranker does not read judgment grades. `scripts/evaluate_ranking.py` reports the held-out split using the same candidate set for tag overlap, an explicitly named `id_order_fallback`, and concept-aware ranking. Metrics are implemented separately in `src/evaluation/metrics.py`; higher relevance grades receive exponential gain for NDCG, while Recall@5, Recall@10 and MAP treat any positive in-pool grade as relevant.
 
-The catalog has no frozen acceptance-rate/popularity snapshot (`acceptance_rate` is null), so the current popularity comparator is a deterministic problem-ID order. It is not a genuine popularity baseline and must be replaced by sourced, dated popularity data before making a BRD-level baseline claim. The six-query test set is intentionally small; the recorded comparison is an initial offline check, not a general ranking-quality claim. Judgments are held in a fixture separate from ranker code, but both rely on human-maintained catalog metadata, which can itself be wrong.
+The catalog has no frozen acceptance-rate/popularity snapshot (`acceptance_rate` is null), so the current comparator is a deterministic problem-ID order. It is not a popularity baseline and must be replaced by sourced, dated popularity data before making a BRD-level baseline claim. The six-query set is intentionally small; results are descriptive, not general ranking-quality evidence. Judgments are held in a fixture separate from ranker code, but both rely on human-maintained catalog metadata, which can itself be wrong.
 
 ## Milestones 4–5 diagnosis and personal retrieval
 
-Diagnosis uses a small explicit target-ID prerequisite map in `src/knowledge_profile/diagnosis.py`, with catalog concepts as a fallback for unmapped targets. It compares only stable taxonomy IDs against profile evidence; the `covered` status alone satisfies Ready. Emerging and unobserved evidence are returned with supporting IDs and become practice gaps. The path reuses deterministic concept matching and Easy-to-Hard ordering. This is a compact MVP mapping, not a full prerequisite graph.
+Diagnosis uses a reviewed target-ID map plus the transitive closure of the versioned 28-node concept DAG in `src/knowledge_profile/prerequisite_graph.py`. It compares stable taxonomy IDs against profile evidence; the `covered` status alone satisfies Ready. Emerging and unobserved evidence are returned with supporting IDs and become practice gaps. The graph is a teaching scaffold rather than a universal prerequisite truth.
 
 Personal accepted code is imported only by an explicit call with `owner_authorized=True`. The source must be under ignored `data/raw/`; rows must identify the same owner and be marked accepted. The private corpus is stored beneath a SHA-256-derived owner directory and retrieval validates owner attribution before returning snippets. This boundary is local and opt-in; it is not multi-user authentication or hosted authorization. Missing corpus, empty corpus, and no search match have separate states. No real private code is present in fixtures or tests.
 
@@ -91,7 +100,7 @@ Personal accepted code is imported only by an explicit call with `owner_authoriz
 
 Personal import and retrieval have separate endpoints and an owner acknowledgement required for both. Import accepts only a relative path beneath ignored `data/raw/`, delegates resolved-path containment and owner validation to the existing importer, and replaces the owner's corpus. Public username selection never implies personal-code authorization. This is a trusted local workflow; both services bind to loopback in the documented commands. Authentication, remote hosting, concurrent import coordination, and production upload controls remain outside this milestone.
 
-No contract discrepancy or scope expansion was needed for M6. The existing frozen judgments include relevance IDs outside the catalog candidate pool; they were preserved. A future versioned evaluation revision must reconcile that mismatch and obtain a real popularity snapshot before claiming the BRD ranking criterion.
+The owner explicitly amended scope on 22 November 2026, as recorded in [the BRD](BRD.md). Frozen ranking judgments include relevance IDs outside the catalog candidate pool; they remain unchanged and are excluded from attainable relevance in reported metrics, with affected IDs disclosed per query. Acceptance rates are unavailable, so the ID-order comparator is not a genuine popularity baseline. The BRD ranking criterion remains unproven until a larger, reconciled pool and sourced popularity snapshot are available.
 
 ## Production considerations (out of MVP)
 

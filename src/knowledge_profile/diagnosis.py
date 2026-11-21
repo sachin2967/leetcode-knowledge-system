@@ -3,9 +3,9 @@
 from dataclasses import dataclass
 
 from src.data.models import Problem
+from src.knowledge_profile.prerequisite_graph import ancestors
 from src.knowledge_profile.profile import KnowledgeProfile
 from src.ranking.ranker import Recommendation, practice_path
-
 
 # Compact, reviewed MVP mapping. Entries are prerequisite concepts required by
 # these target problem IDs; it is intentionally not a universal concept graph.
@@ -45,17 +45,28 @@ class Diagnosis:
     uncertainty: tuple[str, ...]
 
 
-def diagnose_target(target: Problem, profile: KnowledgeProfile,
-                    catalog: tuple[Problem, ...], taxonomy_ids: frozenset[str],
-                    *, path_limit: int = 10) -> Diagnosis:
+def diagnose_target(
+    target: Problem,
+    profile: KnowledgeProfile,
+    catalog: tuple[Problem, ...],
+    taxonomy_ids: frozenset[str],
+    *,
+    path_limit: int = 10,
+) -> Diagnosis:
     """Compare a target's curated prerequisites with observed profile evidence.
 
     Only `covered` evidence counts toward Ready. Emerging evidence is shown but
     remains a gap; absent evidence means unobserved, never inability.
     """
-    required = PREREQUISITES.get(target.problem_id, target.concepts)
+    base_required = PREREQUISITES.get(target.problem_id, target.concepts)
+    required_set = set(base_required)
+    for concept in base_required:
+        required_set.update(ancestors(concept))
+    required = tuple(sorted(required_set))
     if not required or set(required) - taxonomy_ids:
-        raise ValueError(f"No valid prerequisite mapping for target {target.problem_id}")
+        raise ValueError(
+            f"No valid prerequisite mapping for target {target.problem_id}"
+        )
     if target.problem_id not in {problem.problem_id for problem in catalog}:
         raise ValueError("Target must belong to the supplied catalog")
     evidence = {item.concept_id: item for item in profile.concepts}
@@ -71,14 +82,29 @@ def diagnose_target(target: Problem, profile: KnowledgeProfile,
         is_covered = status == "covered"
         if not is_covered:
             missing.append(concept)
-        explanation = (f"Covered by {len(ids)} solved catalog problem(s)." if is_covered else
-                       f"{status.capitalize()} evidence from {len(ids)} solved catalog problem(s); coverage threshold is not met.")
+        explanation = (
+            f"Covered by {len(ids)} solved catalog problem(s)."
+            if is_covered
+            else f"{status.capitalize()} evidence from {len(ids)} solved catalog problem(s); coverage threshold is not met."
+        )
         rows.append(ConceptReadiness(concept, status, confidence, ids, explanation))
     ordered_missing = tuple(missing)
-    path = practice_path(catalog, ordered_missing, limit=path_limit) if ordered_missing else ()
+    path = (
+        practice_path(catalog, ordered_missing, limit=path_limit)
+        if ordered_missing
+        else ()
+    )
     ready = not ordered_missing
-    return Diagnosis(target.problem_id, target.title, "Ready" if ready else "Not ready",
-                     profile.taxonomy_version, tuple(rows), ordered_missing,
-                     "All curated prerequisites meet the covered evidence threshold." if ready else
-                     "Practice the listed gaps; missing evidence is not evidence of inability.",
-                     path, profile.uncertainty)
+    return Diagnosis(
+        target.problem_id,
+        target.title,
+        "Ready" if ready else "Not ready",
+        profile.taxonomy_version,
+        tuple(rows),
+        ordered_missing,
+        "All curated prerequisites meet the covered evidence threshold."
+        if ready
+        else "Practice the listed gaps; missing evidence is not evidence of inability.",
+        path,
+        profile.uncertainty,
+    )
