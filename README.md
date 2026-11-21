@@ -1,4 +1,4 @@
-# LeetCode Knowledge-Aware RAG & Socratic Practice Mentor
+# LeetCode Knowledge-Aware Socratic Practice Mentor
 
 Project 1 of the ML portfolio described in the master BRD (Version 2.0, 12 October 2026). The intended system uses a learner's public solved history to identify concept coverage, diagnose prerequisites for a target problem, and recommend an ordered practice path. If the learner imports their own accepted submissions, it can also retrieve relevant personal code templates.
 
@@ -110,9 +110,9 @@ Demo mode reads the [synthetic solved fixture](data/sample/demo_solved_mvp-1.jso
 python -m scripts.evaluate_ranking
 ```
 
-The ranker supports query-based recommendations and easier-to-harder practice paths. The evaluation uses six fixed queries, a versioned 111-problem candidate catalog, hand-graded relevance (0–2), and fixed train/test query splits. It reports NDCG@10, Recall@5, Recall@10, and MAP for tag overlap, the ID-order fallback, and concept-aware ranking in [the frozen report](data/sample/ranking_report_mvp-1.json). Judgments outside the candidate pool are excluded from attainable relevance and listed per query. Consult the report's limitations before interpreting the small-split results.
+The ranker supports query-based recommendations and easier-to-harder practice paths. The evaluation uses six fixed queries, a versioned 111-problem candidate catalog, hand-graded relevance (0–2), and fixed train/test query splits. It reports NDCG@10, Recall@5, Recall@10, and MAP for tag overlap, the ID-order fallback, and concept-aware ranking in [the frozen report](data/sample/ranking_report_mvp-1.json). The concept-aware method is given each query's curated concept IDs; the relevance rubric is also concept-based. Treat this strictly as a small **oracle-concept-input regression check**: it does not evaluate whether the system can infer concepts from natural-language queries or establish general ranking quality. Judgments outside the candidate pool are excluded from attainable relevance and listed per query.
 
-On the three held-out queries, concept-aware ranking scores NDCG@10 **0.9564**, Recall@5 **0.8571**, and MAP **0.9045** (tag overlap: **0.8302 / 0.6905 / 0.7917**). These metrics use only judgments in the frozen 111-problem pool; out-of-pool labels are disclosed in the report. The “popularity” comparator is an ID-order fallback because acceptance rates are unavailable, so this is not evidence of beating a genuine popularity baseline. With only three held-out queries and hand-curated labels, these results are descriptive, not a general ranking-quality claim. A larger re-judged pool and sourced, dated popularity snapshot are required before asserting the BRD's baseline success criterion.
+The three-query test split produces NDCG@10 **0.9564**, Recall@5 **0.8571**, and MAP **0.9045** for concept-aware ranking (tag overlap: **0.8302 / 0.6905 / 0.7917**). Because the benchmark supplies the target concept IDs and judges results using those concepts, these numbers mainly check consistency of taxonomy mappings and ranking behavior when intent is already known. They are not independent ranking-quality evidence. The “popularity” comparator is only an ID-order fallback because acceptance rates are unavailable. A larger independently judged pool, query-to-concept evaluation, and sourced dated popularity snapshot are needed before asserting the BRD's baseline success criterion.
 
 Guardrails are evaluated independently with `python -m scripts.evaluate_guardrails`. The frozen [challenge set](data/sample/guardrail_cases_v1.json) covers injection, solution requests, out-of-scope input, benign help requests, and executable-output shapes. The current report records **16/16** input decisions and **11/11** output decisions on that small authored set; it is a regression check, not a guarantee. See [the report](data/sample/guardrail_report_v1.json) for confusion counts and limitations.
 
@@ -141,9 +141,9 @@ python -m ruff check src tests scripts streamlit_app
 
 ## Resume-safe project summary
 
-> Built a local-first LeetCode practice mentor with a 28-concept prerequisite DAG, recency/difficulty/frequency-weighted learner evidence, explainable recommendations, and a four-level retrieval-grounded Socratic mentor. Added regex/AST response screening, optional local Ollama generation, and FastAPI/Streamlit with loopback Docker Compose deployment; offline ranking reached NDCG@10 0.956 vs 0.830 tag overlap on three held-out queries, while a 27-case authored guardrail suite passed.
+> Built a local-first LeetCode practice mentor with a 28-concept prerequisite DAG, recency/difficulty/frequency-weighted learner evidence, explainable practice paths, and four-level curated Socratic hints. Added regex/AST response screening, optional local Ollama generation, and FastAPI/Streamlit with loopback Docker Compose deployment; its six-query offline checks are explicitly scoped as regression tests and do not establish general ranking quality or safety.
 
-Qualify the metrics in interviews: the ranking set is tiny and hand-judged, the popularity comparator is not backed by real popularity data, and the guardrail set does not establish a safety guarantee. Do not claim active users, production-scale hosting, or a genuine popularity-baseline win without additional evidence.
+Describe the hints as curated retrieval-grounded hints (not vector/FAISS retrieval). Qualify the metrics in interviews: ranking receives oracle concept IDs, the test set is tiny and hand-judged, the popularity comparator is not backed by real popularity data, and the guardrail set does not establish a safety guarantee. Do not claim active users, production-scale hosting, or a genuine popularity-baseline win without additional evidence.
 
 ## Delivery sequence
 

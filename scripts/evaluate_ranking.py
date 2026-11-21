@@ -42,6 +42,7 @@ def main() -> None:
         "randomness_used": False,
         "dataset_provenance": dataset["provenance"],
         "relevance_rubric": dataset["rubric"],
+        "task_definition": "conditional ranking given explicit query concept IDs; query-to-concept inference is not evaluated",
         "ranker_configuration": {
             "concept_weight": CONCEPT_WEIGHT,
             "difficulty_bonus": DIFFICULTY_BONUS,
@@ -55,6 +56,7 @@ def main() -> None:
         "split": "test",
         "limitations": [
             "Only six small hand-judged queries are included; aggregate metrics are descriptive, not generalizable.",
+            "The concept-aware ranker receives each query's curated concept IDs; those IDs are also central to the relevance rubric. The result is an oracle-concept-input regression check, not an independent natural-language ranking evaluation.",
             "Some frozen judgments fall outside the catalog candidate pool; these are excluded from attainable relevance and listed per query.",
             "Catalog acceptance rates are null, so id_order_fallback is not a popularity baseline; BRD popularity comparison remains unmeasured.",
             "Tag and concept mappings are curated and may contain errors.",

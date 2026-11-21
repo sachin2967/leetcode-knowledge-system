@@ -111,11 +111,12 @@ def test_profile_confidence_uses_difficulty_recent_order_and_frequency() -> None
         CATALOG,
         TAXONOMY,
     )
-    get_score = lambda profile: next(
-        item.confidence
-        for item in profile.concepts
-        if item.concept_id == "arrays_hashing"
-    )
+    def get_score(profile):
+        return next(
+            item.confidence
+            for item in profile.concepts
+            if item.concept_id == "arrays_hashing"
+        )
     assert get_score(medium) > get_score(easy)
     assert get_score(medium) > get_score(older)
     frequent = build_profile(
