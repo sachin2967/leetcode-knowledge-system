@@ -56,7 +56,19 @@ jobs:
               hint = json.load(response)
           assert hint["retrieved_concepts"] == ["sliding_window"]
 
-          with urllib.request.urlopen("http://127.0.0.1:8501", timeout=5) as response:
-              assert response.status == 200
+          for _ in range(30):
+              try:
+                  with urllib.request.urlopen("http://127.0.0.1:8501/_stcore/health", timeout=2) as response:
+                      assert response.status == 200
+                  break
+              except (OSError, urllib.error.URLError):
+                  time.sleep(2)
+          else:
+              raise RuntimeError("Streamlit did not become ready")
           PY
-          docker compose down
+      - name: Container diagnostics on failure
+        if: failure()
+        run: docker compose logs --no-color --tail=100
+      - name: Stop containers
+        if: always()
+        run: docker compose down
