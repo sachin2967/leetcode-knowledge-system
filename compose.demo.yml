@@ -1,0 +1,25 @@
+# Isolated fixture-only pilot. API stays on loopback and carries an operator key.
+# Put TLS/access controls in front of any externally exposed UI.
+services:
+  api:
+    build: .
+    command: ["python", "-m", "uvicorn", "src.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+    environment:
+      APP_ENV: production
+      LKS_SERVING_MODE: demo_only
+      LKS_API_KEY: ${LKS_API_KEY:?Set a random operator key of at least 32 characters}
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
+  ui:
+    build: .
+    command: ["python", "-m", "streamlit", "run", "streamlit_app/app.py", "--server.address", "0.0.0.0", "--server.port", "8501"]
+    environment:
+      LKS_API_URL: http://api:8000
+      LKS_SERVING_MODE: demo_only
+      LKS_API_KEY: ${LKS_API_KEY:?Set a random operator key of at least 32 characters}
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      - api
+    restart: unless-stopped

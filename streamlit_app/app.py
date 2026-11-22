@@ -6,12 +6,18 @@ import httpx
 import streamlit as st
 
 API_URL = os.environ.get("LKS_API_URL", "http://127.0.0.1:8000").rstrip("/")
+DEMO_ONLY = os.getenv("LKS_SERVING_MODE", "trusted_local") == "demo_only"
 
 
 def api(method: str, path: str, payload: dict | None = None):
     try:
         response = httpx.request(
-            method, API_URL + path, json=payload, timeout=30, trust_env=False
+            method,
+            API_URL + path,
+            json=payload,
+            timeout=30,
+            trust_env=False,
+            headers={"X-API-Key": os.getenv("LKS_API_KEY", "")},
         )
         response.raise_for_status()
         return response.json()
@@ -37,8 +43,14 @@ def main() -> None:
     if catalog is None or concepts is None:
         return
     with st.form("practice"):
-        mode = st.radio("Profile source", ["demo", "public"], horizontal=True)
-        username = st.text_input("Public username (public mode only)")
+        mode = st.radio(
+            "Profile source",
+            ["demo"] if DEMO_ONLY else ["demo", "public"],
+            horizontal=True,
+        )
+        username = (
+            "" if DEMO_ONLY else st.text_input("Public username (public mode only)")
+        )
         query = st.text_input("Practice query", value="sliding window")
         requested = st.multiselect("Concepts", concepts)
         difficulty = st.selectbox(
@@ -132,6 +144,12 @@ def main() -> None:
                         "Retrieved evidence: " + " · ".join(hint["retrieved_evidence"])
                     )
                     st.caption(hint["safety"])
+
+    if DEMO_ONLY:
+        st.caption(
+            "This demo uses bundled fixtures. Public profile fetching and personal code access are disabled."
+        )
+        return
 
     with st.expander("My accepted code — local owner-authorized access"):
         st.caption(

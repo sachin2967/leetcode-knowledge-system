@@ -104,6 +104,14 @@ The owner explicitly amended scope on 22 November 2026, as recorded in [the BRD]
 
 ## Production considerations (out of MVP)
 
+The optional isolated `demo_only` profile is documented in the BRD amendment.
+It exposes only fixture-based journeys behind an operator API key in production
+mode. Personal routes are blocked before request handling, removed from OpenAPI,
+and absent from its UI. Public history fetching and local model calls are disabled.
+Use `compose.demo.yml`, which has no personal-data mounts; never publish the trusted
+local profile. `/ready` verifies that catalog and taxonomy startup completed;
+`/live` only reports process liveness. External TLS and rate limits are still required.
+
 These are deployment decisions to revisit after the local MVP meets its evaluation criteria; they do not add requirements to the current build.
 
 - **Public profile access:** Cache fetched solved lists with an explicit expiry, respect upstream rate limits and terms, and show when cached data may be stale. Use bounded retries and a clear unavailable state when LeetCode cannot be reached.

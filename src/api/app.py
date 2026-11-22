@@ -11,6 +11,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 
+from src.api.boundary import ServingBoundary
 from src.api.models import (
     GraphResponse,
     ImportRequest,
@@ -58,6 +59,10 @@ def create_app(
 ) -> FastAPI:
     """Load validated local snapshots at startup; injectable public I/O for tests."""
 
+    serving_mode = os.getenv("LKS_SERVING_MODE", "trusted_local")
+    if serving_mode not in {"trusted_local", "demo_only"}:
+        raise ValueError("LKS_SERVING_MODE must be trusted_local or demo_only")
+
     @asynccontextmanager
     async def lifespan(application: FastAPI):
         application.state.taxonomy = load_taxonomy_ids(
@@ -74,8 +79,13 @@ def create_app(
         version="1.0.0",
         lifespan=lifespan,
     )
+    application.add_middleware(ServingBoundary, serving_mode=serving_mode)
 
     def profile(source: ProfileRequest) -> KnowledgeProfile:
+        if serving_mode == "demo_only" and source.mode != "demo":
+            raise HTTPException(
+                403, "Demo-only mode uses fixtures and never fetches public profiles."
+            )
         try:
             solved = (
                 read_solved_fixture(root / "data/sample/demo_solved_mvp-1.json")
@@ -93,6 +103,22 @@ def create_app(
     @application.get("/health")
     def health() -> dict[str, str]:
         return {"status": "ok"}
+
+    @application.get("/live")
+    def live() -> dict[str, str]:
+        return {"status": "alive"}
+
+    @application.get("/ready")
+    def ready():
+        catalog = getattr(application.state, "catalog", None)
+        if not catalog or not getattr(application.state, "taxonomy", None):
+            raise HTTPException(503, "Catalog and taxonomy are not loaded.")
+        return {
+            "status": "ready",
+            "serving_mode": serving_mode,
+            "catalog_size": len(catalog),
+            "graph_version": GRAPH_VERSION,
+        }
 
     @application.get("/catalog", response_model=tuple[Problem, ...])
     def catalog() -> tuple[Problem, ...]:
@@ -119,7 +145,11 @@ def create_app(
         if target is None:
             raise HTTPException(404, "Target problem is outside the local catalog")
         try:
-            model = os.environ.get("LKS_OLLAMA_MODEL")
+            model = (
+                os.environ.get("LKS_OLLAMA_MODEL")
+                if serving_mode == "trusted_local"
+                else None
+            )
             generator = (
                 ollama_generator(
                     os.environ.get("LKS_OLLAMA_URL", "http://127.0.0.1:11434"), model
@@ -190,12 +220,20 @@ def create_app(
         )
 
     def authorize(acknowledged: bool) -> None:
+        if serving_mode == "demo_only":
+            raise HTTPException(
+                404, "Personal code endpoints are disabled in demo-only mode."
+            )
         if not acknowledged:
             raise HTTPException(
                 403, "Explicit owner authorization is required for personal code access"
             )
 
-    @application.post("/personal/import", response_model=ImportResponse)
+    @application.post(
+        "/personal/import",
+        response_model=ImportResponse,
+        include_in_schema=serving_mode == "trusted_local",
+    )
     def import_code(request: ImportRequest) -> ImportResponse:
         authorize(request.owner_authorized)
         # Only relative paths within raw are accepted; domain code resolves and
@@ -214,7 +252,11 @@ def create_app(
             raise HTTPException(422, str(exc)) from exc
         return ImportResponse(imported=count)
 
-    @application.post("/personal/templates", response_model=TemplateSearch)
+    @application.post(
+        "/personal/templates",
+        response_model=TemplateSearch,
+        include_in_schema=serving_mode == "trusted_local",
+    )
     def templates(request: TemplateRequest) -> TemplateSearch:
         authorize(request.owner_authorized)
         try:

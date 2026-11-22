@@ -1,5 +1,20 @@
 # LeetCode Knowledge-Aware Socratic Practice Mentor
 
+## Isolated demonstration pilot
+
+The optional `LKS_SERVING_MODE=demo_only` profile uses fixture journeys only: personal
+routes are blocked and hidden from OpenAPI, public-history requests are rejected,
+and optional Ollama calls are disabled. Production mode requires this profile and a
+32+ character server-side `LKS_API_KEY`; API clients use `X-API-Key`. The UI forwards
+the key from its server environment and hides personal controls. Bodies are capped
+at 64 KiB. `/ready` verifies catalog/taxonomy loading; `/live` checks the process.
+
+Use `docker compose -f compose.demo.yml up --build` with the key configured. This
+profile mounts no raw/personal data, and the image runs as a non-root user. Published
+ports remain loopback-only; external TLS/access controls and rate limits are still
+required. The default `trusted_local` mode preserves owner-authorized local imports
+and is refused in production mode. See the BRD scope amendment for the boundary.
+
 Project 1 of the ML portfolio described in the master BRD (Version 2.0, 12 October 2026). The intended system uses a learner's public solved history to identify concept coverage, diagnose prerequisites for a target problem, and recommend an ordered practice path. If the learner imports their own accepted submissions, it can also retrieve relevant personal code templates.
 
 **Current status:** Complete local portfolio application: a 28-concept prerequisite DAG, solved-history evidence profiles, diagnosis and recommendations, retrieval-grounded Socratic hints, input/output guardrails, opt-in owner-scoped template search, FastAPI/Streamlit, and offline evaluation. It is packaged for trusted local deployment. Public hosting with personal-code access is deliberately not enabled.

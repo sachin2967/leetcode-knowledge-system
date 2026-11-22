@@ -72,3 +72,16 @@ The project owner explicitly requested completion of the portfolio concept **Lee
 The mentor uses a deterministic local retrieval index over curated pattern cards and catalog invariants. It uses deterministic hints by default and can optionally call an Ollama model on the same machine. No remote LLM is called. The output filter screens generated text before returning it. The mentor refuses common code requests, prompt overrides, and unrelated questions. “RAG” means retrieval-grounded hint assembly; optional local generation is not a measured model-quality claim.
 
 Deployment means a containerized trusted local application with both ports bound to loopback and local persistent storage. Public hosting and multi-user exposure remain out of scope until authentication, authorization, rate limiting, retention, and operational controls are implemented. No production security claim should be made for the owner acknowledgement field.
+
+## Scope amendment — isolated demonstration pilot (22 November 2026)
+
+The owner requested production engineering upgrades across the existing portfolio.
+An optional `demo_only` serving profile now permits a separate fixture-only pilot:
+personal-code endpoints are disabled and omitted from OpenAPI, public profile
+fetching is rejected, and optional Ollama generation is disabled. Production mode
+requires this profile plus a server-side operator API key. The UI does not offer
+private imports in this profile. Its image contains only the safe sample catalog;
+the dedicated Compose profile mounts no raw/personal data. Request bodies are
+bounded and the image runs as a non-root user. This is not authenticated multi-user
+hosting: TLS, external access controls, and per-client rate limits remain deployment
+requirements. Trusted local behavior and the frozen evaluation set are preserved.
