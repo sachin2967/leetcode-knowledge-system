@@ -133,6 +133,30 @@ Guardrails are evaluated independently with `python -m scripts.evaluate_guardrai
 
 ## Diagnose prerequisites
 
+### Input ablation and independent review
+
+`python -m scripts.audit_ranking_inputs` reruns the unchanged frozen judgments
+with and without supplied query concept IDs. The [audit](data/sample/ranking_input_audit_v1.json)
+finds test NDCG@10 0.8302 for the current text-only path and 0.9564 with oracle
+concepts; text-only ranking ties tag overlap on this set. The original ranking
+success criterion is therefore still unproven.
+
+A separate [20-query set](data/sample/review_queries_v1.json) supplies natural-language
+requests without concept IDs. Its [blinded review worksheet](data/sample/ranking_review_v1.csv)
+contains 387 query/problem pairs pooled from current methods plus random controls.
+Grades are blank, not zero: a human reviewer should assign 0 (unrelated), 1
+(prerequisite/partial transfer), or 2 (directly useful) without seeing method names
+or scores. The [manifest](data/sample/ranking_review_manifest_v1.json) records the
+rubric and frozen inputs. Do not tune on held-out grades. The preparation command,
+`python -m scripts.prepare_ranking_review`, refuses to overwrite an existing worksheet.
+These are unjudged inputs, not new quality measurements. A sourced popularity
+comparison and independent judgments remain necessary.
+
+After human grading, `python -m scripts.evaluate_reviewed_ranking` verifies that
+query/catalog checksums and every candidate pair are unchanged. It refuses blank
+grades and reports metrics explicitly within the incomplete judged pool; it
+never treats unjudged items as negative ground truth.
+
 `src.knowledge_profile.prerequisite_graph` defines a versioned DAG across all 28 stable taxonomy IDs. Diagnosis expands each curated target mapping through transitive prerequisites and reports evidence IDs. Only `covered` evidence meets the Ready threshold; emerging or unobserved concepts appear as gaps, and an ordered Easy-to-Hard practice path is returned. This is a coverage explanation, never a solve-probability estimate. The edges are a reviewed teaching scaffold, not universal requirements for every problem.
 
 ## Import and retrieve your accepted code (local only)
@@ -143,7 +167,7 @@ Place an owner-authorized JSON array in ignored `data/raw/` with fields `owner`,
 
 `python -m pytest` covers domain behavior, API validation/error contracts, mocked public profiles, owner isolation and import containment, and Streamlit form journeys against the local API. All personal-code test content is synthetic and temporary. No test depends on live LeetCode responses.
 
-The latest local suite passed **68 tests**, plus the frozen ranking and guardrail regressions. The API image built and passed a non-root, network-isolated fixture-only serving check. These checks do not establish cloud availability or model safety. GitHub Actions is configured to run lint, tests, both offline evaluations, Compose validation and container/API/UI smoke checks; hosted workflow results must be checked separately. Tests require neither live LeetCode responses nor an installed local LLM.
+The latest local suite passed **71 tests**, plus the frozen ranking and guardrail regressions. The API image built and passed a non-root, network-isolated fixture-only serving check. These checks do not establish cloud availability or model safety. GitHub Actions is configured to run lint, tests, both offline evaluations, Compose validation and container/API/UI smoke checks; hosted workflow results must be checked separately. Tests require neither live LeetCode responses nor an installed local LLM.
 
 Run the checks with:
 
