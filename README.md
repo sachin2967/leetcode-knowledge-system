@@ -143,7 +143,7 @@ Place an owner-authorized JSON array in ignored `data/raw/` with fields `owner`,
 
 `python -m pytest` covers domain behavior, API validation/error contracts, mocked public profiles, owner isolation and import containment, and Streamlit form journeys against the local API. All personal-code test content is synthetic and temporary. No test depends on live LeetCode responses.
 
-The original M6 run passed **48 tests**. The expanded project now has a **64-test** local suite and separate ranking and guardrail evaluation scripts. Docker Compose config validates, but this environment has no running Docker engine, so image build and container startup could not be exercised here. The API and Streamlit UI were smoke-checked on loopback: the health, concept graph, and mentor hint requests returned successfully, and the UI returned HTTP 200. GitHub Actions runs lint, tests, both offline evaluations, Compose validation, and a container build/API/UI smoke test. The installed Starlette test client emits an HTTPX deprecation warning; no tests depend on live LeetCode responses or an installed local LLM.
+The latest local suite passed **68 tests**, plus the frozen ranking and guardrail regressions. The API image built and passed a non-root, network-isolated fixture-only serving check. These checks do not establish cloud availability or model safety. GitHub Actions is configured to run lint, tests, both offline evaluations, Compose validation and container/API/UI smoke checks; hosted workflow results must be checked separately. Tests require neither live LeetCode responses nor an installed local LLM.
 
 Run the checks with:
 
