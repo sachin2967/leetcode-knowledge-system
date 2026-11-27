@@ -1,0 +1,26 @@
+{
+  "version": "review-queries-v1",
+  "purpose": "Unjudged authored natural-language requests. Freeze before human judgments and any ranking changes. No concept IDs are supplied to systems.",
+  "queries": [
+    {"id":"r01","split":"development","text":"Find pairs in a sorted list without trying every possible pair."},
+    {"id":"r02","split":"development","text":"Track how many letters occur in a moving substring."},
+    {"id":"r03","split":"development","text":"Count routes when smaller results can be reused."},
+    {"id":"r04","split":"development","text":"Explore connected cells in a grid."},
+    {"id":"r05","split":"development","text":"Combine overlapping meeting times."},
+    {"id":"r06","split":"development","text":"Search an ordered array by repeatedly halving the candidates."},
+    {"id":"r07","split":"test","text":"Find the shortest contiguous text containing all required letters."},
+    {"id":"r08","split":"test","text":"Choose the next available course after all its dependencies are done."},
+    {"id":"r09","split":"test","text":"Find how much trapped water lies between columns."},
+    {"id":"r10","split":"test","text":"Repeatedly remove the cheapest item while more items arrive."},
+    {"id":"r11","split":"test","text":"Enumerate combinations and undo each choice before exploring another."},
+    {"id":"r12","split":"test","text":"Keep connectivity information while merging groups."},
+    {"id":"r13","split":"test","text":"Answer sums over many array ranges efficiently."},
+    {"id":"r14","split":"test","text":"Find the next warmer day without scanning all later days for each day."},
+    {"id":"r15","split":"test","text":"Look up words that share a prefix."},
+    {"id":"r16","split":"test","text":"Update array elements and answer range queries repeatedly."},
+    {"id":"r17","split":"test","text":"Choose items subject to a limited capacity."},
+    {"id":"r18","split":"test","text":"Count numbers below a bound whose digits satisfy a rule."},
+    {"id":"r19","split":"test","text":"Visit each node in a binary tree and combine child results."},
+    {"id":"r20","split":"test","text":"Find the cheapest route through a graph with nonnegative edge weights."}
+  ]
+}

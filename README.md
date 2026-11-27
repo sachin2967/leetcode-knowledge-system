@@ -34,7 +34,7 @@ Frozen offline checks (see `data/sample/*_report_*.json`):
 | Concept-aware ranking, 3-query test split | NDCG@10 0.9564, Recall@5 0.8571, MAP 0.9045 |
 | Tag-overlap baseline, same split | NDCG@10 0.8302, Recall@5 0.6905, MAP 0.7917 |
 | Guardrail challenge set (authored) | 16/16 input decisions, 11/11 output decisions |
-| Test suite | 68 tests |
+| Test suite | API, UI, ranking, and evaluation tests |
 
 **Read these honestly.** The ranking benchmark has six hand-judged queries (three held
 out for testing). The concept-aware ranker is *given* each query's concept IDs, and the
@@ -174,6 +174,33 @@ The ranker supports query-based recommendations and easier-to-harder practice pa
 The three-query test split produces NDCG@10 **0.9564**, Recall@5 **0.8571**, and MAP **0.9045** for concept-aware ranking (tag overlap: **0.8302 / 0.6905 / 0.7917**). Because the benchmark supplies the target concept IDs and judges results using those concepts, these numbers mainly check consistency of taxonomy mappings and ranking behavior when intent is already known. They are not independent ranking-quality evidence. The “popularity” comparator is only an ID-order fallback because acceptance rates are unavailable. A larger independently judged pool, query-to-concept evaluation, and sourced dated popularity snapshot are needed before asserting the BRD's baseline success criterion.
 
 Guardrails are evaluated independently with `python -m scripts.evaluate_guardrails`. The frozen [challenge set](data/sample/guardrail_cases_v1.json) covers injection, solution requests, out-of-scope input, benign help requests, and executable-output shapes. The current report records **16/16** input decisions and **11/11** output decisions on that small authored set; it is a regression check, not a guarantee. See [the report](data/sample/guardrail_report_v1.json) for confusion counts and limitations.
+
+### Ranking-input audit and blinded review
+
+The audit removes supplied concepts from the product path and compares it with
+tag overlap and the oracle-concept condition on the same frozen judgments.
+
+| Input condition | NDCG@10 | Recall@5 | MAP |
+| --- | ---: | ---: | ---: |
+| Text-only product path | 0.8302 | 0.6905 | 0.7917 |
+| Tag overlap | 0.8302 | 0.6905 | 0.7917 |
+| Supplied oracle concepts | 0.9564 | 0.8571 | 0.9045 |
+
+The text-only path ties tag overlap on this test split. The judgments are still
+small and concept-centric. The oracle condition uses supplied relevance cues,
+and the project still lacks a sourced popularity baseline.
+
+The blinded [worksheet](data/sample/ranking_review_v1.csv) covers 20
+authored queries and 387 candidate pairs. Its fields for human grades
+are blank, so human-reviewed ranking has no results. The scorer rejects blanks
+and changes to frozen candidate identities. Review provenance is recorded in the
+[manifest](data/sample/ranking_review_manifest_v1.json).
+
+```bash
+python -m scripts.audit_ranking_inputs
+```
+
+See the [audit report](data/sample/ranking_input_audit_v1.json) for per-query results.
 
 ## Diagnose prerequisites
 

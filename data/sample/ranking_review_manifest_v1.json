@@ -1,0 +1,14 @@
+{
+  "protocol": "blinded-review-v1",
+  "seed": 42,
+  "queries": 20,
+  "rows": 387,
+  "queries_sha256": "4888669f2d660c8d60238f11d313b2af5de568f772d9090f9bb508ad81d50d16",
+  "catalog_sha256": "f3b2c95cc972485da6c6680386f6e1ef15c8ec76a608e7adaea05d1fb9f13d8e",
+  "text_hashing": "UTF-8 with universal newlines; portable across Git CRLF/LF checkouts",
+  "worksheet_sha256_before_review": "3bd2f40803e11b1feefacf2dcc003a0eebb0dd5e4de9c8e09ef6a7d83d9d496e",
+  "rubric": "2 directly useful for the request; 1 prerequisite or partial transfer; 0 unrelated. Judge from problem understanding; use notes for ambiguity. Blank is unjudged, never zero.",
+  "review_status": "unjudged",
+  "required": "A human reviewer should grade without seeing method identity or scores. Do not tune on held-out test grades.",
+  "limitations": "Authored queries and pooled incomplete judgments are not user-traffic evidence; no popularity comparator."
+}
