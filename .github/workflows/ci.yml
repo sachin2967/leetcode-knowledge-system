@@ -27,6 +27,8 @@ jobs:
         run: python -m scripts.evaluate_ranking
       - name: Evaluate guardrails
         run: python -m scripts.evaluate_guardrails
+      - name: Audit ranking without oracle concept inputs
+        run: python -m scripts.audit_ranking_inputs
       - name: Validate container configuration
         run: docker compose config --quiet
       - name: Build and smoke test local deployment
