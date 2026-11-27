@@ -11,6 +11,10 @@ next, and gives progressive Socratic hints without handing over full solutions.
 **Status:** complete local portfolio application (FastAPI + Streamlit), packaged for
 trusted local use. Public hosting with personal-code access is deliberately not enabled.
 
+> **Try the safe demo:** use the [isolated fixture-only setup](#isolated-demo) and view
+> the [sample practice-plan preview](docs/images/fixture-practice-demo.png). Personal-code
+> imports remain local-only; this project intentionally has no public hosted demo.
+
 ![Local practice plan displayed using the synthetic demo learner fixture](docs/images/fixture-practice-demo.png)
 
 *The local API and Streamlit app are running in fixture-only mode (`LKS_SERVING_MODE=demo_only`).*
