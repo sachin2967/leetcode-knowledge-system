@@ -11,6 +11,10 @@ next, and gives progressive Socratic hints without handing over full solutions.
 **Status:** complete local portfolio application (FastAPI + Streamlit), packaged for
 trusted local use. Public hosting with personal-code access is deliberately not enabled.
 
+![Local practice plan displayed using the synthetic demo learner fixture](docs/images/fixture-practice-demo.png)
+
+*The local API and Streamlit app are running in fixture-only mode (`LKS_SERVING_MODE=demo_only`).*
+
 ## Highlights
 
 - **28-concept prerequisite DAG** with transitive diagnosis and an ordered Easy-to-Hard
