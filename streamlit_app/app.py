@@ -19,15 +19,14 @@ def api(method: str, path: str, payload: dict | None = None):
             trust_env=False,
             headers={"X-API-Key": os.getenv("LKS_API_KEY", "")},
         )
-        response.raise_for_status()
-        return response.json()
-    except httpx.HTTPStatusError as exc:
-        st.error(
-            f"API request failed ({exc.response.status_code}): {exc.response.text}"
-        )
     except httpx.RequestError:
         st.error("API unavailable. Start the local FastAPI server and retry.")
-    return None
+        return None
+    if not response.is_success:
+        st.error(f"API request failed ({response.status_code}): {response.text}")
+        return None
+    return response.json()
+
 
 
 def main() -> None:
