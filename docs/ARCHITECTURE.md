@@ -2,9 +2,9 @@
 
 **Status:** Scope amendment adds the 28-node prerequisite DAG, retrieval-grounded Socratic mentor, optional local Ollama generation, input/output guardrails, guardrail evaluation, and loopback-only container deployment to the completed M1–M6 workflows.
 
-**Source:** Project 1, master BRD Version 2.0 (12 October 2026), with the session's stack choice fixed below.
+**Source:** project requirements (BRD v2.0, 12 October 2026), with the stack choice fixed below.
 
-## Planned flow
+## Data flow
 
 ```mermaid
 flowchart LR
@@ -45,7 +45,7 @@ The diagram shows implemented local data flow. Query-based recommendation and co
 | Demo UI | Streamlit | Small Python-only interface for interview walkthroughs |
 | Tests | pytest | Simple automated checks and regression tests |
 
-Node.js, heavy React, a mandatory vector database, and cloud infrastructure are excluded from MVP. FAISS/Chroma/pgvector appear as study options in the master BRD, not required dependencies for this MVP. A local index can be chosen later if template volume warrants it.
+Node.js, heavy React, a mandatory vector database, and cloud infrastructure are excluded from MVP. FAISS/Chroma/pgvector appear as study options in the BRD, not required dependencies for this MVP. A local index can be chosen later if template volume warrants it.
 
 ## Component contracts
 
