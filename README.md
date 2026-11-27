@@ -1,78 +1,131 @@
 # LeetCode Knowledge-Aware Socratic Practice Mentor
 
-## Isolated demonstration pilot
+[![CI](https://github.com/sachin2967/leetcode-knowledge-system/actions/workflows/ci.yml/badge.svg)](https://github.com/sachin2967/leetcode-knowledge-system/actions/workflows/ci.yml)
+![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-The optional `LKS_SERVING_MODE=demo_only` profile uses fixture journeys only: personal
-routes are blocked and hidden from OpenAPI, public-history requests are rejected,
-and optional Ollama calls are disabled. Production mode requires this profile and a
-32+ character server-side `LKS_API_KEY`; API clients use `X-API-Key`. The UI forwards
-the key from its server environment and hides personal controls. Bodies are capped
-at 64 KiB. `/ready` verifies catalog/taxonomy loading; `/live` checks the process.
+A local-first practice mentor that turns a learner's solved history into concept
+coverage, diagnoses missing prerequisites for a target problem, ranks what to practice
+next, and gives progressive Socratic hints without handing over full solutions.
 
-Use `docker compose -f compose.demo.yml up --build` with the key configured. This
-profile mounts no raw/personal data, and the image runs as a non-root user. Published
-ports remain loopback-only; external TLS/access controls and rate limits are still
-required. The default `trusted_local` mode preserves owner-authorized local imports
-and is refused in production mode. See the BRD scope amendment for the boundary.
+**Status:** complete local portfolio application (FastAPI + Streamlit), packaged for
+trusted local use. Public hosting with personal-code access is deliberately not enabled.
 
-Project 1 of the ML portfolio described in the master BRD (Version 2.0, 12 October 2026). The intended system uses a learner's public solved history to identify concept coverage, diagnose prerequisites for a target problem, and recommend an ordered practice path. If the learner imports their own accepted submissions, it can also retrieve relevant personal code templates.
+## Highlights
 
-**Current status:** Complete local portfolio application: a 28-concept prerequisite DAG, solved-history evidence profiles, diagnosis and recommendations, retrieval-grounded Socratic hints, input/output guardrails, opt-in owner-scoped template search, FastAPI/Streamlit, and offline evaluation. It is packaged for trusted local deployment. Public hosting with personal-code access is deliberately not enabled.
+- **28-concept prerequisite DAG** with transitive diagnosis and an ordered Easy-to-Hard
+  practice path. Diagnosis explains coverage; it is not a solve-probability estimate.
+- **Evidence-based learner profile:** difficulty-weighted solves with recency decay and
+  noisy-OR frequency aggregation; `covered` needs two distinct solves.
+- **Ranking with baselines:** tag overlap, an ID-order fallback and concept-aware
+  ranking, scored with NDCG@10, Recall@5/10 and MAP on a frozen, hand-judged set.
+- **Four-level curated Socratic hints** that are retrieval-grounded (curated concept
+  hints, no vector index), screened by regex and Python AST/code-shape output checks.
+- **Privacy boundary:** personal accepted code is opt-in, owner-keyed, stored only under
+  ignored `data/raw/`, and never retrieved by the mentor.
+- **Offline by default:** deterministic hints; optional local Ollama generation only.
 
-## Read first
+## Results
 
-- [Business requirements](docs/BRD.md): users, scope, acceptance criteria, and data strategy.
-- [Architecture](docs/ARCHITECTURE.md): planned data flow, component boundaries, and locked stack.
-- [Concept taxonomy](docs/CONCEPT_TAXONOMY.md): the 28 stable MVP concept IDs.
-- [Agent instructions](AGENTS.md): development and evaluation rules.
+Frozen offline checks (see `data/sample/*_report_*.json`):
 
-## Repository layout
-
-| Path | Planned responsibility |
+| Check | Result |
 | --- | --- |
-| `src/data/` | Public problem metadata, solved-list ingestion, and local persistence |
-| `src/knowledge_profile/` | Concept evidence and prerequisite diagnosis |
-| `src/mentor/` | Local retrieval, progressive hints, and guardrails |
-| `src/ranking/` | Candidate generation, baselines, and ranking |
-| `src/evaluation/` | Frozen judgments, metrics, and experiment reports |
-| `src/api/` | FastAPI application and request/response models |
-| `streamlit_app/` | Streamlit demo |
-| `scripts/` | Explicit data import and evaluation entry points |
-| `data/sample/` | Small, safe demo fixtures |
-| `data/raw/` | Local source imports, excluded from Git |
-| `tests/` | Automated checks |
+| Concept-aware ranking, 3-query test split | NDCG@10 0.9564, Recall@5 0.8571, MAP 0.9045 |
+| Tag-overlap baseline, same split | NDCG@10 0.8302, Recall@5 0.6905, MAP 0.7917 |
+| Guardrail challenge set (authored) | 16/16 input decisions, 11/11 output decisions |
+| Test suite | 68 tests |
 
-## Set up and run the foundation checks
+**Read these honestly.** The ranking benchmark has six hand-judged queries (three held
+out for testing). The concept-aware ranker is *given* each query's concept IDs, and the
+relevance rubric is also concept-based, so this is an oracle-concept-input regression
+check, not evidence of general ranking quality or of inferring concepts from text. The
+"popularity" comparator is only an ID-order fallback because the catalog has no sourced
+popularity snapshot. The guardrail set is a small regression check, not a safety proof.
+There is no FAISS or other vector index.
 
-Use Python 3.11 or newer. In PowerShell:
+## Architecture
+
+```mermaid
+flowchart LR
+    S[Solved history<br/>demo fixture or public accepts] --> P[Concept profile<br/>weighted evidence]
+    C[(Catalog + taxonomy<br/>111 problems, 28 concepts)] --> P
+    P --> D[Prerequisite diagnosis<br/>DAG expansion]
+    D --> R[Ranker<br/>concept-aware]
+    C --> R
+    R --> A[FastAPI]
+    C --> M[Mentor<br/>curated hints, levels 1-4]
+    M --> G[Input and output guardrails]
+    G --> A
+    A --> U[Streamlit UI]
+    O[(Owner-local accepted code<br/>data/raw, opt-in)] -.-> A
+```
+
+Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/BRD.md](docs/BRD.md) and the
+[concept taxonomy](docs/CONCEPT_TAXONOMY.md).
+
+## Quickstart
+
+Requires Python 3.11 or newer.
+
+```bash
+git clone https://github.com/sachin2967/leetcode-knowledge-system.git
+cd leetcode-knowledge-system
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+make catalog      # rebuild catalog from the curated seed
+make test         # lint + tests
+make api          # http://127.0.0.1:8000/docs
+make ui           # http://127.0.0.1:8501 (second terminal)
+```
+
+PowerShell equivalents:
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
+python -m venv .venv; .venv\Scripts\Activate.ps1
 python -m pip install -r requirements-dev.txt
 python -m scripts.rebuild_catalog
 python -m pytest
-```
-
-The rebuild command validates the manually curated [seed](data/sample/problems_seed.psv) against the locked taxonomy, then writes the versioned [JSON export](data/sample/catalog_mvp-1.0.json) and [SQLite store](data/sample/catalog_mvp-1.0.sqlite3). SQLite is the primary local store. The seed is static: no network access or LeetCode credentials are needed. Acceptance rates are `null` because this seed has no frozen source snapshot for that changing field; tags are brief manual topic labels. `collected_at` records the manual curation date, and each note explains the concept mapping. [requirements.txt](requirements.txt) includes API, UI, and local testing dependencies.
-
-## Run the local API and demo
-
-From the repository root, with the environment activated, start the API:
-
-```powershell
 python -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000
-```
-
-In a second terminal using the same environment:
-
-```powershell
 python -m streamlit run streamlit_app/app.py --server.address 127.0.0.1 --server.port 8501
 ```
 
-Open http://127.0.0.1:8501 for the demo and http://127.0.0.1:8000/docs for interactive API contracts. The API validates the local SQLite catalog and taxonomy at startup; rebuild the catalog if the snapshot is absent. The UI defaults to that loopback API; set `LKS_API_URL` before starting Streamlit to override it. No credentials, external model, or private data are needed for demo mode.
+The rebuild validates the curated [seed](data/sample/problems_seed.psv) against the locked
+taxonomy and writes the versioned [JSON export](data/sample/catalog_mvp-1.0.json) and
+[SQLite store](data/sample/catalog_mvp-1.0.sqlite3). No network access or LeetCode
+credentials are needed. Acceptance rates are `null` (no frozen source snapshot) and tags
+are brief manual labels. The UI defaults to the loopback API; set `LKS_API_URL` to
+override. In the UI, choose **demo**, target **76: Minimum Window Substring**, and submit
+to see evidence, missing prerequisites and the Easy-to-Hard path. Difficulty is a ranking
+preference, not a hard filter, and scores are ordering signals, not probabilities.
+**public** mode fetches bounded recent public accepts once per plan and shows source,
+collection date, unmapped IDs and incomplete-history uncertainty; nothing is persisted.
 
-## Container deployment and optional local LLM
+## API
+
+| Endpoint | Contract |
+| --- | --- |
+| `GET /health` | Loaded service health |
+| `GET /catalog`, `GET /concepts` | Validated catalog and locked concept IDs |
+| `GET /concept-graph` | Versioned prerequisite DAG covering the 28 stable concept IDs |
+| `POST /profiles` | `{ "mode": "demo" }` or `{ "mode": "public", "username": "..." }` |
+| `POST /practice` | Source, query, concepts, optional difficulty/target ID, and limit (1–50); returns profile, recommendations, and optional diagnosis/path |
+| `POST /mentor` | `{ "problem_id": 76, "question": "How should I start?", "level": 1 }`; returns one retrieved hint level (1–4) |
+| `POST /personal/import` | Owner, explicit `owner_authorized: true`, and JSON source path relative to ignored `data/raw/`; replaces that owner's corpus |
+| `POST /personal/templates` | Owner, explicit acknowledgement, and search query; returns attributed snippets or an explicit unavailable/empty/no-match state |
+
+Example request:
+
+```bash
+curl -s -X POST http://127.0.0.1:8000/practice -H 'Content-Type: application/json' \
+  -d '{"source":{"mode":"demo"},"query":"window","concepts":["sliding_window"],"target_problem_id":76,"limit":5}'
+```
+
+Invalid inputs return 422, missing catalog targets 404, missing owner acknowledgement 403, and unavailable public history 503 with a demo fallback suggestion. The UI reports connection errors if the API is stopped. Personal access is a separate opt-in form: public usernames never automatically open a corpus. Import uses an existing owner-created local JSON file; it does not upload or fetch submission code. Both services are for a trusted local machine and must stay on loopback; owner acknowledgement is not authentication for hosted multi-user use.
+
+Mentor requests are problem-scoped. The service rejects common prompt overrides, direct full-code requests, and unrelated questions. It retrieves a curated concept hint and catalog invariant, then reveals one of four progressive levels. The output filter uses regex and Python AST/code-shape checks. These are defense-in-depth checks, not a proof against all attacks; the optional model is local-only and model/version-specific safety still requires separate review. The mentor never retrieves accepted user code.
+
+## Docker and optional local LLM
 
 The containerized deployment keeps host ports on loopback. From the repository root:
 
@@ -86,29 +139,20 @@ Open http://127.0.0.1:8501. The API docs are at http://127.0.0.1:8000/docs. `dat
 
 The app works offline using deterministic retrieval and hint cards. For optional local generation, install and start Ollama on the same machine, pull a model supported by your hardware, then set `LKS_OLLAMA_MODEL` in `.env`. The compose default points to `host.docker.internal:11434`. Restart the stack after changing `.env`. Model-generated text is passed through the same output guardrail; if local generation is unavailable the mentor returns a recoverable error. No remote model endpoint is accepted. The adapter uses Ollama's local `/api/chat` endpoint ([API reference](https://docs.ollama.com/api/chat)).
 
-Select **demo**, choose target **76: Minimum Window Substring**, and submit to see evidence, missing prerequisite coverage, and the Easy-to-Hard gap path. Query text and optional stable concept IDs produce recommendations with reasons. Difficulty is a ranking preference, not a hard filter; scores are ordering signals, not probabilities. Empty matches produce an empty list. Select **public** and enter a username to explicitly fetch bounded recent public accepts; the UI shows source, collection date, unmapped IDs, and incomplete-history uncertainty. Each submitted plan makes at most one public fetch. Profile results remain in the current UI session until replaced; the API does not persist or cache them.
+## Isolated demo
 
-| Endpoint | Contract |
-| --- | --- |
-| `GET /health` | Loaded service health |
-| `GET /catalog`, `GET /concepts` | Validated catalog and locked concept IDs |
-| `GET /concept-graph` | Versioned prerequisite DAG covering the 28 stable concept IDs |
-| `POST /profiles` | `{ "mode": "demo" }` or `{ "mode": "public", "username": "..." }` |
-| `POST /practice` | Source, query, concepts, optional difficulty/target ID, and limit (1–50); returns profile, recommendations, and optional diagnosis/path |
-| `POST /mentor` | `{ "problem_id": 76, "question": "How should I start?", "level": 1 }`; returns one retrieved hint level (1–4) |
-| `POST /personal/import` | Owner, explicit `owner_authorized: true`, and JSON source path relative to ignored `data/raw/`; replaces that owner's corpus |
-| `POST /personal/templates` | Owner, explicit acknowledgement, and search query; returns attributed snippets or an explicit unavailable/empty/no-match state |
+The optional `LKS_SERVING_MODE=demo_only` profile uses fixture journeys only: personal
+routes are blocked and hidden from OpenAPI, public-history requests are rejected,
+and optional Ollama calls are disabled. Production mode requires this profile and a
+32+ character server-side `LKS_API_KEY`; API clients use `X-API-Key`. The UI forwards
+the key from its server environment and hides personal controls. Bodies are capped
+at 64 KiB. `/ready` verifies catalog/taxonomy loading; `/live` checks the process.
 
-Example offline request in PowerShell:
-
-```powershell
-$plan = @{ source = @{ mode = 'demo' }; query = 'window'; concepts = @('sliding_window'); target_problem_id = 76; limit = 5 } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/practice -ContentType 'application/json' -Body $plan
-```
-
-Invalid inputs return 422, missing catalog targets 404, missing owner acknowledgement 403, and unavailable public history 503 with a demo fallback suggestion. The UI reports connection errors if the API is stopped. Personal access is a separate opt-in form: public usernames never automatically open a corpus. Import uses an existing owner-created local JSON file; it does not upload or fetch submission code. Both services are for a trusted local machine and must stay on loopback; owner acknowledgement is not authentication for hosted multi-user use.
-
-Mentor requests are problem-scoped. The service rejects common prompt overrides, direct full-code requests, and unrelated questions. It retrieves a curated concept hint and catalog invariant, then reveals one of four progressive levels. The output filter uses regex and Python AST/code-shape checks. These are defense-in-depth checks, not a proof against all attacks; the optional model is local-only and model/version-specific safety still requires separate review. The mentor never retrieves accepted user code.
+Use `docker compose -f compose.demo.yml up --build` with the key configured. This
+profile mounts no raw/personal data, and the image runs as a non-root user. Published
+ports remain loopback-only; external TLS/access controls and rate limits are still
+required. The default `trusted_local` mode preserves owner-authorized local imports
+and is refused in production mode. See the BRD scope amendment for the boundary.
 
 ## Build a concept profile
 
@@ -139,34 +183,50 @@ Guardrails are evaluated independently with `python -m scripts.evaluate_guardrai
 
 Place an owner-authorized JSON array in ignored `data/raw/` with fields `owner`, `problem_id`, `title`, `language`, `accepted`, and `code`. Call `import_accepted_code(owner, source, data_root, owner_authorized=True)` explicitly; it rejects imports outside `data/raw/`, mismatched owners, and non-accepted rows. The stored corpus goes under a SHA-256 owner-keyed directory in `data/raw/personal_corpora/`. `retrieve_templates` only reads that owner's corpus and returns `unavailable` (no corpus), `empty` (corpus has no accepted snippets), `available` (matches), or `no_matches`. This is a local opt-in boundary; it does not provide authentication for hosted multi-user use. Never put real personal submissions in Git or tests.
 
-## Local verification
+## Verification
 
-`python -m pytest` covers domain behavior, API validation/error contracts, mocked public profiles, owner isolation and import containment, and Streamlit form journeys against the local API. All personal-code test content is synthetic and temporary. No test depends on live LeetCode responses.
+`python -m pytest` covers domain behavior, API validation and error contracts, mocked
+public profiles, owner isolation and import containment, and Streamlit form journeys
+against the local API. Personal-code test content is synthetic. No test needs live
+LeetCode responses or an installed LLM. CI runs lint, tests, both offline evaluations,
+Compose validation and container smoke checks.
 
-The latest local suite passed **68 tests**, plus the frozen ranking and guardrail regressions. The API image built and passed a non-root, network-isolated fixture-only serving check. These checks do not establish cloud availability or model safety. GitHub Actions is configured to run lint, tests, both offline evaluations, Compose validation and container/API/UI smoke checks; hosted workflow results must be checked separately. Tests require neither live LeetCode responses nor an installed local LLM.
-
-Run the checks with:
-
-```powershell
-python -m pytest
+```bash
+make test                          # ruff + pytest
 python -m scripts.evaluate_ranking
 python -m scripts.evaluate_guardrails
-python -m ruff check src tests scripts streamlit_app
 ```
 
-## Resume-safe project summary
+The API image also passed a non-root, network-isolated fixture-only serving check. None
+of this establishes cloud availability or model safety.
 
-> Built a local-first LeetCode practice mentor with a 28-concept prerequisite DAG, recency/difficulty/frequency-weighted learner evidence, explainable practice paths, and four-level curated Socratic hints. Added regex/AST response screening, optional local Ollama generation, and FastAPI/Streamlit with loopback Docker Compose deployment; its six-query offline checks are explicitly scoped as regression tests and do not establish general ranking quality or safety.
+## Limitations
 
-Describe the hints as curated retrieval-grounded hints (not vector/FAISS retrieval). Qualify the metrics in interviews: ranking receives oracle concept IDs, the test set is tiny and hand-judged, the popularity comparator is not backed by real popularity data, and the guardrail set does not establish a safety guarantee. Do not claim active users, production-scale hosting, or a genuine popularity-baseline win without additional evidence.
+- Ranking evidence is small, hand-judged and oracle-concept-input; it is not general
+  ranking quality.
+- Public history exposes only recent accepts and a total count, so profiles are
+  incomplete and recency is a proxy from list order.
+- The prerequisite DAG is a reviewed teaching scaffold, not a universal requirement.
+- Guardrails are defense in depth, not a guarantee; optional local models need their
+  own safety review.
+- Both services are for a trusted local machine. Owner acknowledgement is not
+  authentication for hosted multi-user use.
+- No active users, production hosting or measured popularity-baseline win is claimed.
 
-## Delivery sequence
+## Project status
 
-1. Acquire and validate public problem metadata; map problems to the frozen concept IDs.
-2. Build a profile from public solved history and a reproducible demo profile.
-3. Freeze evaluation queries and judgments; implement tag overlap and popularity baselines before improved ranking.
-4. Add prerequisite diagnosis and ordered practice paths. **Complete.**
-5. Add opt-in import and retrieval for a learner's own accepted submissions. **Complete, local only.**
-6. Expose the behavior through FastAPI and Streamlit; report ranking metrics and failure cases. **Complete, local only.**
+| Capability | Status |
+| --- | --- |
+| Catalog and 28-concept taxonomy | Complete |
+| Profiles from public history and demo fixture | Complete |
+| Frozen ranking and guardrail evaluations | Complete (small, scoped) |
+| Prerequisite diagnosis and practice paths | Complete |
+| Opt-in local accepted-code retrieval | Complete, local only |
+| FastAPI and Streamlit | Complete, local only |
 
-The local master PDF is the source for project requirements. These repository docs summarize its Project 1 scope and make implementation decisions explicit; changes to scope or taxonomy should be recorded before code changes.
+Scope and taxonomy changes should be recorded in the docs before code changes; see
+[AGENTS.md](AGENTS.md).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
